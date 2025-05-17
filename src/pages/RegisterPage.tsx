@@ -117,7 +117,7 @@ const RegisterPage = () => {
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
             >
               <option value="employee">Employee</option>
-              <option value="admin">Admin</option>
+             
             </select>
           </div>
           
