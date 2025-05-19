@@ -7,7 +7,7 @@ interface Client {
   companyName: string;
   serviceName: string;
   email:string;
-  mobileNumber:number;
+  mobileNumber:string;
   employeeName?: string;
   amount: number;
   status: 'pending' | 'approved' | 'rejected';
