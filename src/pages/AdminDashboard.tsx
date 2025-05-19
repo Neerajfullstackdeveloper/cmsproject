@@ -58,26 +58,26 @@ const AdminDashboard = () => {
     filterClients();
   }, [searchTerm, activeFilter, clients]);
 
-  const filterClients = () => {
-    let filtered = clients;
+  // const filterClients = () => {
+  //   let filtered = clients;
     
-    // Apply status filter
-    if (activeFilter !== 'all') {
-      filtered = filtered.filter(client => client.status === activeFilter);
-    }
+  //   // Apply status filter
+  //   if (activeFilter !== 'all') {
+  //     filtered = filtered.filter(client => client.status === activeFilter);
+  //   }
     
-    // Apply search filter
-    if (searchTerm.trim() !== '') {
-      const search = searchTerm.toLowerCase();
-      filtered = filtered.filter(
-        client =>
-          client.employeeName.toLowerCase().includes(search) ||
-          client.companyName.toLowerCase().includes(search)
-      );
-    }
+  //   // Apply search filter
+  //   if (searchTerm.trim() !== '') {
+  //     const search = searchTerm.toLowerCase();
+  //     filtered = filtered.filter(
+  //       client =>
+  //         client.employeeName.toLowerCase().includes(search) ||
+  //         client.companyName.toLowerCase().includes(search)
+  //     );
+  //   }
     
-    setFilteredClients(filtered);
-  };
+  //   setFilteredClients(filtered);
+  // };
 
   const handleStatusUpdate = async (id: string, status: 'approved' | 'rejected') => {
     try {
