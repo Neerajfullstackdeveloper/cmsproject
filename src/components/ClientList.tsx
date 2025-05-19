@@ -7,6 +7,7 @@ interface Client {
   companyName: string;
   serviceName: string;
   email:string;
+  number:Number;
   employeeName?: string;
   amount: number;
   status: 'pending' | 'approved' | 'rejected';
@@ -74,6 +75,8 @@ const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, emptyMessage }:
               Client/Company
             </th><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Client E-mail
+            </th><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Client Number
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Service
@@ -107,8 +110,13 @@ const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, emptyMessage }:
                 <div className="text-sm text-gray-500">{client.companyName}</div>
               </td>
               <td className="px-6 py-4">
-                <div className="text-sm font-medium text-gray-900">{client.clientName}</div>
                 <div className="text-sm text-gray-500">{client.email}</div>
+              </td>
+              <td className="px-6 py-4">
+                <div className="text-sm text-gray-500">{client.email}</div>
+              </td>
+              <td className="px-6 py-4">
+                <div className="text-sm text-gray-500">{client.number}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">{client.serviceName}</div>
