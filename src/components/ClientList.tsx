@@ -113,9 +113,6 @@ const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, emptyMessage }:
                 <div className="text-sm text-gray-500">{client.email}</div>
               </td>
               <td className="px-6 py-4">
-                <div className="text-sm text-gray-500">{client.email}</div>
-              </td>
-              <td className="px-6 py-4">
                 <div className="text-sm text-gray-500">{client.number}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
