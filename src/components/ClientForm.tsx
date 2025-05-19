@@ -13,6 +13,7 @@ interface FormData {
   amount: number;
   gstNumber: string;
   email: string;
+  number:number;
   serviceName: string;
   serviceType: 'new sale' | 'upsale';
 }
