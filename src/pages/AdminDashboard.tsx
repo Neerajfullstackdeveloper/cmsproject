@@ -11,6 +11,7 @@ interface Client {
   companyName: string;
   serviceName: string;
   employeeName: string;
+  email: string;
   amount: number;
   status: 'pending' | 'approved' | 'rejected';
   createdAt: string;
@@ -30,29 +31,24 @@ const AdminDashboard = () => {
     rejected: 0,
   });
 
-  const fetchClients = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axios.get('/clients');
-      
-      if (data.success) {
-        setClients(data.data);
-        setFilteredClients(data.data);
-        
-        // Calculate stats
-        const total = data.data.length;
-        const pending = data.data.filter((client: Client) => client.status === 'pending').length;
-        const approved = data.data.filter((client: Client) => client.status === 'approved').length;
-        const rejected = data.data.filter((client: Client) => client.status === 'rejected').length;
-        
-        setStats({ total, pending, approved, rejected });
-      }
-    } catch (error) {
-      toast.error('Failed to fetch submissions');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const filterClients = () => {
+  let filtered = clients;
+
+  // Apply status filter
+  if (activeFilter !== 'all') {
+    filtered = filtered.filter(client => client.status === activeFilter);
+  }
+
+  // Apply search filter for email only
+  if (searchTerm.trim() !== '') {
+    const search = searchTerm.toLowerCase();
+    filtered = filtered.filter(client =>
+      client.email.toLowerCase().includes(search)
+    );
+  }
+
+  setFilteredClients(filtered);
+};
 
   useEffect(() => {
     fetchClients();

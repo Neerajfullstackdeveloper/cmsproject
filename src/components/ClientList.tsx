@@ -6,6 +6,7 @@ interface Client {
   clientName: string;
   companyName: string;
   serviceName: string;
+  email:string;
   employeeName?: string;
   amount: number;
   status: 'pending' | 'approved' | 'rejected';
@@ -71,6 +72,8 @@ const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, emptyMessage }:
             )}
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Client/Company
+            </th><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Client E-mail
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Service
