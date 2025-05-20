@@ -6,10 +6,10 @@ interface ClientFormProps {
 }
 
 interface FormData {
-  employeePaymentName:string;
   clientName: string;
   companyName: string;
   mobileNumber: string;
+  employeePaymentName:string;
   paymentReceivedDate: string;
   amount: number;
   gstNumber: string;
