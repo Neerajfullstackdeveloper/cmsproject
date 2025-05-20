@@ -127,6 +127,7 @@ const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, emptyMessage }:
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm font-medium text-gray-900">{client.employeePaymentName}</div>
+                <div className="text-sm font-medium text-gray-900">{console.log('EmployeePaymentName:', client.employeePaymentName)}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-500">{formatDate(client.createdAt)}</div>
