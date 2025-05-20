@@ -106,7 +106,7 @@ const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, emptyMessage }:
             <tr key={client._id} className="hover:bg-gray-50 transition-colors">
               {isAdmin && (
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">{client.clientName}</div>
+                  <div className="text-sm font-medium text-gray-900">{client.employeeName}</div>
                 </td>
               )}
               <td className="px-6 py-4">
@@ -126,7 +126,7 @@ const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, emptyMessage }:
                 <div className="text-sm text-gray-900">₹{client.amount.toFixed(2)}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm font-medium text-gray-900">{client.employeePaymentName}</div>
+                <div className="text-sm font-medium text-gray-900">{client.clientName}</div>
                 <div className="text-sm font-medium text-gray-900">{console.log('EmployeePaymentName:', client.employeePaymentName)}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
