@@ -50,11 +50,11 @@ const ClientForm = ({ onSubmit }: ClientFormProps) => {
             type="text"
             {...register('employeePaymentName', { required: 'Employee name is required' })}
             className={`w-full px-4 py-2 border ${
-              errors.employeePaymentName ? 'border-red-500' : 'border-gray-300'
+              errors.employeePaymentName? 'border-red-500' : 'border-gray-300'
             } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
           />
           {errors.employeePaymentName && (
-            <p className="mt-1 text-sm text-red-600">{errors.clientName.message}</p>
+            <p className="mt-1 text-sm text-red-600">{errors.employeePaymentName.message}</p>
           )}
         </div>
         <div>
