@@ -86,7 +86,7 @@ const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, emptyMessage }:
               Amount
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Clieny By
+              Client By
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Date
@@ -123,7 +123,7 @@ const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, emptyMessage }:
                 <div className="text-sm text-gray-900">{client.serviceName}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-900">${client.amount.toFixed(2)}</div>
+                <div className="text-sm text-gray-900">₹{client.amount.toFixed(2)}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm font-medium text-gray-900">{client.employeePaymentName}</div>

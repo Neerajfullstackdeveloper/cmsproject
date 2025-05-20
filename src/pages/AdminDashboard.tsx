@@ -7,6 +7,7 @@ import ClientList from '../components/ClientList';
 
 interface Client {
   _id: string;
+  employeePaymentName:string;
   clientName: string;
   companyName: string;
   serviceName: string;
