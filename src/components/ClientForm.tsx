@@ -6,6 +6,7 @@ interface ClientFormProps {
 }
 
 interface FormData {
+  employeePaymentName:string;
   clientName: string;
   companyName: string;
   mobileNumber: string;
@@ -41,6 +42,22 @@ const ClientForm = ({ onSubmit }: ClientFormProps) => {
     <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
+          <label htmlFor="employeePaymentName" className="block text-sm font-medium text-gray-700 mb-1">
+            Employee Name <span className="text-red-500">*</span>
+          </label>
+          <input
+            id="employeePaymentName"
+            type="text"
+            {...register('employeePaymentName', { required: 'Employee name is required' })}
+            className={`w-full px-4 py-2 border ${
+              errors.employeePaymentName ? 'border-red-500' : 'border-gray-300'
+            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+          />
+          {errors.employeePaymentName && (
+            <p className="mt-1 text-sm text-red-600">{errors.clientName.message}</p>
+          )}
+        </div>
+        <div>
           <label htmlFor="clientName" className="block text-sm font-medium text-gray-700 mb-1">
             Client Name <span className="text-red-500">*</span>
           </label>
@@ -56,7 +73,6 @@ const ClientForm = ({ onSubmit }: ClientFormProps) => {
             <p className="mt-1 text-sm text-red-600">{errors.clientName.message}</p>
           )}
         </div>
-        
         <div>
           <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 mb-1">
             Company Name <span className="text-red-500">*</span>

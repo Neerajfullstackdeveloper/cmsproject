@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 
 interface Client {
   _id: string;
+  employeePaymentName:string;
   clientName: string;
   companyName: string;
   serviceName: string;
@@ -85,6 +86,9 @@ const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, emptyMessage }:
               Amount
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Clieny By
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Date
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -120,6 +124,9 @@ const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, emptyMessage }:
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">${client.amount.toFixed(2)}</div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div className="text-sm text-gray-900">${client.employeePaymentName}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-500">{formatDate(client.createdAt)}</div>
