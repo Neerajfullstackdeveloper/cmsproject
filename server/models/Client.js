@@ -1,6 +1,12 @@
 import mongoose from 'mongoose';
 
 const clientSchema = new mongoose.Schema({
+  employeePaymentName: {
+    type: String,
+    required: [true, 'Please provide employee name'],
+    trim: true,
+    maxlength: [100, 'Employee name cannot be more than 100 characters']
+  },
   clientName: {
     type: String,
     required: [true, 'Please provide client name'],

@@ -47,6 +47,7 @@ router.get('/my-submissions', authenticate, authorize('employee'), async (req, r
 router.post('/', authenticate, authorize('employee'), async (req, res) => {
   try {
     const {
+      employeePaymentName,
       clientName,
       companyName,
       mobileNumber,
@@ -59,6 +60,7 @@ router.post('/', authenticate, authorize('employee'), async (req, res) => {
     } = req.body;
     
     const newClient = new Client({
+      employeePaymentName,
       clientName,
       companyName,
       mobileNumber,
