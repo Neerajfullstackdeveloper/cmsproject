@@ -130,7 +130,7 @@ const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, emptyMessage }:
                 <div className="text-sm font-medium text-gray-900">{client.employeePaymentName}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-500">{client.paymentReceivedDate}</div>
+                <div className="text-sm text-gray-500">{formatDate(client.paymentReceivedDate)}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeClass(client.status)}`}>
