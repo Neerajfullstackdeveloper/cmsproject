@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 interface Client {
   _id: string;
   employeePaymentName:string;
+  paymentReceivedDate: string;
   clientName: string;
   companyName: string;
   serviceName: string;
@@ -127,10 +128,9 @@ const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, emptyMessage }:
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm font-medium text-gray-900">{client.employeePaymentName}</div>
-                <div className="text-sm font-medium text-gray-900">{console.log('EmployeePaymentName:', client.employeePaymentName)}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-500">{formatDate(client.createdAt)}</div>
+                <div className="text-sm text-gray-500">{client.paymentReceivedDate}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeClass(client.status)}`}>
