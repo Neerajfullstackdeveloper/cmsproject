@@ -16,6 +16,7 @@ interface FormData {
   email: string;
   serviceName: string;
   serviceType: 'new sale' | 'upsale';
+  paymentType: 'companyscanner' | 'phonepay' | 'gateway' | 'banktransfer';
 }
 
 const ClientForm = ({ onSubmit }: ClientFormProps) => {
@@ -221,6 +222,27 @@ const ClientForm = ({ onSubmit }: ClientFormProps) => {
             <option value="">Select service type</option>
             <option value="new sale">New Sale</option>
             <option value="upsale">Upsale</option>
+          </select>
+          {errors.serviceType && (
+            <p className="mt-1 text-sm text-red-600">{errors.serviceType.message}</p>
+          )}
+        </div>
+        <div>
+          <label htmlFor="paymentType" className="block text-sm font-medium text-gray-700 mb-1">
+            Payment Type <span className="text-red-500">*</span>
+          </label>
+          <select
+            id="paymentType"
+            {...register('paymentType', { required: 'Payment type is required' })}
+            className={`w-full px-4 py-2 border ${
+              errors.paymentType ? 'border-red-500' : 'border-gray-300'
+            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+          >
+            <option value="">Select payment type</option>
+            <option value="companyscanner">Company scanner</option>
+            <option value="phonepay">Phone pay</option>
+            <option value="gateway">Website gateway</option>
+            <option value="banktransfer">Bank transfer</option>
           </select>
           {errors.serviceType && (
             <p className="mt-1 text-sm text-red-600">{errors.serviceType.message}</p>

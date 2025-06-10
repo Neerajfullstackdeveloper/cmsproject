@@ -64,6 +64,11 @@ const clientSchema = new mongoose.Schema({
     enum: ['new sale', 'upsale'],
     required: [true, 'Please specify if this is a new sale or upsale']
   },
+  paymentType: {
+    type: String,
+    enum: ['companyscanner', 'phonepay','gateway', 'banktransfer'],
+    required: [true, 'Please specify what was the payment mode']
+  },
   status: {
     type: String,
     enum: ['pending', 'approved', 'rejected'],

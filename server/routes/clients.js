@@ -56,7 +56,8 @@ router.post('/', authenticate, authorize('employee'), async (req, res) => {
       gstNumber,
       email,
       serviceName,
-      serviceType
+      serviceType,
+      paymentType
     } = req.body;
     
     const newClient = new Client({
@@ -72,6 +73,7 @@ router.post('/', authenticate, authorize('employee'), async (req, res) => {
       email,
       serviceName,
       serviceType,
+      paymentType,
       status: 'pending'
     });
     
