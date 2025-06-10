@@ -16,6 +16,7 @@ interface Client {
   email: string;
   amount: number;
   status: 'pending' | 'approved' | 'rejected';
+  paymentType: 'companyscanner' | 'phonepay' | 'gateway' | 'banktransfer';
   createdAt: string;
 }
 

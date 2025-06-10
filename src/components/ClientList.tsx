@@ -13,6 +13,7 @@ interface Client {
   employeeName?: string;
   amount: number;
   status: 'pending' | 'approved' | 'rejected';
+  paymentType: 'companyscanner' | 'phonepay' | 'gateway' | 'banktransfer';
   createdAt: string;
 }
 
@@ -93,6 +94,9 @@ const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, emptyMessage }:
               Date
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Payment Mode
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Status
             </th>
             {isAdmin && (
@@ -132,6 +136,9 @@ const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, emptyMessage }:
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-500">{formatDate(client.paymentReceivedDate)}</div>
                 <div className="text-sm text-gray-500"></div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div className="text-sm font-medium text-gray-900">{client.paymentType}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeClass(client.status)}`}>
