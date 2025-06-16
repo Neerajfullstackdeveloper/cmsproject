@@ -74,7 +74,9 @@ const AdminDashboard = () => {
     if (searchTerm.trim() !== '') {
       const search = searchTerm.toLowerCase();
       filtered = filtered.filter(client =>
-        client.email.toLowerCase().includes(search)
+        client.email.toLowerCase().includes(search)||
+      client.employeeName.toLowerCase().includes(search) ||
+      client.employeePaymentName.toLowerCase().includes(search)
       );
     }
 
