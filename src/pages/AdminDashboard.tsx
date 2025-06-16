@@ -272,15 +272,21 @@ const AdminDashboard = () => {
           ref={tableContainerRef}
           className="overflow-x-auto cursor-grab active:cursor-grabbing"
           onMouseDown={handleMouseDown}
-          style={{ scrollbarWidth: 'none' }}
+          style={{ 
+            scrollbarWidth: 'none',
+            WebkitOverflowScrolling: 'touch',
+            msOverflowStyle: 'none',
+          }}
         >
-          <ClientList
-            clients={filteredClients}
-            loading={loading}
-            isAdmin={true}
-            onStatusUpdate={handleStatusUpdate}
-            emptyMessage={searchTerm ? "No results found for your search." : "No submissions to display."}
-          />
+          <div style={{ minWidth: '100%', width: 'max-content' }}>
+            <ClientList
+              clients={filteredClients}
+              loading={loading}
+              isAdmin={true}
+              onStatusUpdate={handleStatusUpdate}
+              emptyMessage={searchTerm ? "No results found for your search." : "No submissions to display."}
+            />
+          </div>
         </div>
       </div>
     </div>
