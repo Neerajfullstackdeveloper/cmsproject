@@ -7,12 +7,12 @@ import ClientList from '../components/ClientList';
 
 interface Client {
   _id: string;
-  employeePaymentName:string;
+  employeePaymentName: string;
   clientName: string;
   companyName: string;
   serviceName: string;
   employeeName: string;
-  mobileNumber:number;
+  mobileNumber: number;
   email: string;
   amount: number;
   status: 'pending' | 'approved' | 'rejected';
@@ -21,6 +21,8 @@ interface Client {
 }
 
 const AdminDashboard = () => {
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
   const { user } = useAuth();
   const [clients, setClients] = useState<Client[]>([]);
   const [filteredClients, setFilteredClients] = useState<Client[]>([]);
@@ -74,10 +76,21 @@ const AdminDashboard = () => {
     if (searchTerm.trim() !== '') {
       const search = searchTerm.toLowerCase();
       filtered = filtered.filter(client =>
-        client.email.toLowerCase().includes(search)||
-      client.employeeName.toLowerCase().includes(search) ||
-      client.employeePaymentName.toLowerCase().includes(search)
+        client.email.toLowerCase().includes(search) ||
+        client.employeeName.toLowerCase().includes(search) ||
+        client.employeePaymentName.toLowerCase().includes(search)
       );
+    }
+    // Apply date range filter if both dates are provided
+    if (startDate && endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      end.setHours(23, 59, 59, 999); // Include the entire end day
+
+      filtered = filtered.filter(client => {
+        const clientDate = new Date(client.createdAt);
+        return clientDate >= start && clientDate <= end;
+      });
     }
 
     setFilteredClients(filtered);
@@ -85,7 +98,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     filterClients();
-  }, [searchTerm, activeFilter, clients]);
+  }, [searchTerm, activeFilter, clients, startDate, endDate]);
 
   // Handle approve/reject
   const handleStatusUpdate = async (id: string, status: 'approved' | 'rejected') => {
@@ -183,12 +196,34 @@ const AdminDashboard = () => {
             {activeFilter === 'all'
               ? 'All Submissions'
               : activeFilter === 'pending'
-              ? 'Pending Submissions'
-              : activeFilter === 'approved'
-              ? 'Approved Submissions'
-              : 'Rejected Submissions'}
+                ? 'Pending Submissions'
+                : activeFilter === 'approved'
+                  ? 'Approved Submissions'
+                  : 'Rejected Submissions'}
           </h2>
-
+ <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+          <div className="flex flex-col md:flex-row gap-2">
+            <div className="relative">
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                placeholder="Start date"
+              />
+            </div>
+            <span className="hidden md:flex items-center">to</span>
+            <div className="relative">
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                placeholder="End date"
+              />
+            </div>
+          </div>
+</div>
           <div className="w-full md:w-64 relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Search size={18} className="text-gray-400" />
