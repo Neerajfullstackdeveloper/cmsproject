@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -35,6 +35,7 @@ const AdminDashboard = () => {
     approved: 0,
     rejected: 0,
   });
+  const tableContainerRef = useRef<HTMLDivElement>(null);
 
   // Fetch client submissions
   const fetchClients = async () => {
@@ -119,6 +120,35 @@ const AdminDashboard = () => {
     }
   };
 
+  // Handle mouse down for horizontal scrolling
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!tableContainerRef.current) return;
+    
+    const container = tableContainerRef.current;
+    const startX = e.clientX;
+    const scrollLeft = container.scrollLeft;
+    container.style.cursor = 'grabbing';
+    container.style.userSelect = 'none';
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!tableContainerRef.current) return;
+      const x = e.clientX - startX;
+      tableContainerRef.current.scrollLeft = scrollLeft - x;
+    };
+
+    const handleMouseUp = () => {
+      if (!tableContainerRef.current) return;
+      tableContainerRef.current.style.cursor = 'grab';
+      tableContainerRef.current.style.removeProperty('user-select');
+      
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  };
+
   return (
     <div className="space-y-8">
       <div>
@@ -201,29 +231,29 @@ const AdminDashboard = () => {
                   ? 'Approved Submissions'
                   : 'Rejected Submissions'}
           </h2>
- <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-          <div className="flex flex-col md:flex-row gap-2">
-            <div className="relative">
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                placeholder="Start date"
-              />
-            </div>
-            <span className="hidden md:flex items-center">to</span>
-            <div className="relative">
-              <input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                placeholder="End date"
-              />
+          <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+            <div className="flex flex-col md:flex-row gap-2">
+              <div className="relative">
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  placeholder="Start date"
+                />
+              </div>
+              <span className="hidden md:flex items-center">to</span>
+              <div className="relative">
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  className="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  placeholder="End date"
+                />
+              </div>
             </div>
           </div>
-</div>
           <div className="w-full md:w-64 relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Search size={18} className="text-gray-400" />
@@ -238,13 +268,20 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        <ClientList
-          clients={filteredClients}
-          loading={loading}
-          isAdmin={true}
-          onStatusUpdate={handleStatusUpdate}
-          emptyMessage={searchTerm ? "No results found for your search." : "No submissions to display."}
-        />
+        <div
+          ref={tableContainerRef}
+          className="overflow-x-auto cursor-grab active:cursor-grabbing"
+          onMouseDown={handleMouseDown}
+          style={{ scrollbarWidth: 'none' }}
+        >
+          <ClientList
+            clients={filteredClients}
+            loading={loading}
+            isAdmin={true}
+            onStatusUpdate={handleStatusUpdate}
+            emptyMessage={searchTerm ? "No results found for your search." : "No submissions to display."}
+          />
+        </div>
       </div>
     </div>
   );
