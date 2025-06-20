@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { Search, FileCheck, FileX, Clock, Users } from 'lucide-react';
+import { Search, FileCheck, FileX, Clock, Users, ChevronDown } from 'lucide-react';
 import ClientList from '../components/ClientList';
 
 interface Client {
@@ -17,6 +17,7 @@ interface Client {
   amount: number;
   status: 'pending' | 'approved' | 'rejected';
   paymentType: 'companyscanner' | 'phonepay' | 'gateway' | 'banktransfer';
+  saleType: 'new' | 'upsale';
   createdAt: string;
 }
 
@@ -29,6 +30,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState('all');
+  const [saleTypeFilter, setSaleTypeFilter] = useState<'all' | 'new' | 'upsale'>('all');
   const [stats, setStats] = useState({
     total: 0,
     pending: 0,
@@ -36,6 +38,7 @@ const AdminDashboard = () => {
     rejected: 0,
   });
   const tableContainerRef = useRef<HTMLDivElement>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // Fetch client submissions
   const fetchClients = async () => {
@@ -74,6 +77,10 @@ const AdminDashboard = () => {
       filtered = filtered.filter(client => client.status === activeFilter);
     }
 
+    if (saleTypeFilter !== 'all') {
+      filtered = filtered.filter(client => client.saleType === saleTypeFilter);
+    }
+
     if (searchTerm.trim() !== '') {
       const search = searchTerm.toLowerCase();
       filtered = filtered.filter(client =>
@@ -99,7 +106,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     filterClients();
-  }, [searchTerm, activeFilter, clients, startDate, endDate]);
+  }, [searchTerm, activeFilter, clients, startDate, endDate, saleTypeFilter]);
 
   // Handle approve/reject
   const handleStatusUpdate = async (id: string, status: 'approved' | 'rejected') => {
@@ -221,8 +228,8 @@ const AdminDashboard = () => {
 
       {/* Client List & Search */}
       <div className="bg-white rounded-lg shadow-md">
-        <div className="p-6 border-b flex flex-col md:flex-row justify-between items-start md:items-center">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4 md:mb-0">
+        <div className="p-6 border-b flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <h2 className="text-xl font-semibold text-gray-800">
             {activeFilter === 'all'
               ? 'All Submissions'
               : activeFilter === 'pending'
@@ -230,9 +237,15 @@ const AdminDashboard = () => {
                 : activeFilter === 'approved'
                   ? 'Approved Submissions'
                   : 'Rejected Submissions'}
+            {saleTypeFilter !== 'all' && (
+              <span className="text-sm font-normal ml-2">
+                ({saleTypeFilter === 'new' ? 'New Sales' : 'Upsales'})
+              </span>
+            )}
           </h2>
-          <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-            <div className="flex flex-col md:flex-row gap-2">
+          
+          <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto items-end md:items-center">
+            <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
               <div className="relative">
                 <input
                   type="date"
@@ -253,18 +266,65 @@ const AdminDashboard = () => {
                 />
               </div>
             </div>
-          </div>
-          <div className="w-full md:w-64 relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search size={18} className="text-gray-400" />
+
+            {/* Sale Type Dropdown */}
+            <div className="relative w-full md:w-48">
+              <button
+                type="button"
+                className="inline-flex justify-between w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              >
+                {saleTypeFilter === 'all' ? 'All Sales' : saleTypeFilter === 'new' ? 'New Sales' : 'Upsales'}
+                <ChevronDown className="-mr-1 ml-2 h-5 w-5" />
+              </button>
+
+              {isDropdownOpen && (
+                <div className="origin-top-right absolute right-0 mt-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+                  <div className="py-1" role="menu" aria-orientation="vertical">
+                    <button
+                      onClick={() => {
+                        setSaleTypeFilter('all');
+                        setIsDropdownOpen(false);
+                      }}
+                      className={`block px-4 py-2 text-sm w-full text-left ${saleTypeFilter === 'all' ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
+                    >
+                      All Sales
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSaleTypeFilter('new');
+                        setIsDropdownOpen(false);
+                      }}
+                      className={`block px-4 py-2 text-sm w-full text-left ${saleTypeFilter === 'new' ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
+                    >
+                      New Sales
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSaleTypeFilter('upsale');
+                        setIsDropdownOpen(false);
+                      }}
+                      className={`block px-4 py-2 text-sm w-full text-left ${saleTypeFilter === 'upsale' ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
+                    >
+                      Upsales
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
-            <input
-              type="text"
-              placeholder="Search by email..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
+
+            <div className="w-full md:w-64 relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search size={18} className="text-gray-400" />
+              </div>
+              <input
+                type="text"
+                placeholder="Search by email..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              />
+            </div>
           </div>
         </div>
 
