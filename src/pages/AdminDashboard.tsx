@@ -17,7 +17,7 @@ interface Client {
   amount: number;
   status: 'pending' | 'approved' | 'rejected';
   paymentType: 'companyscanner' | 'phonepay' | 'gateway' | 'banktransfer';
-  saleType: 'new' | 'upsale';
+  serviceType: 'new sale' | 'upsale';
   createdAt: string;
 }
 
@@ -30,7 +30,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState('all');
-  const [saleTypeFilter, setSaleTypeFilter] = useState<'all' | 'new' | 'upsale'>('all');
+  const [serviceTypeFilter, setServiceTypeFilter] = useState<'all' | 'new sale' | 'upsale'>('all');
   const [stats, setStats] = useState({
     total: 0,
     pending: 0,
@@ -69,7 +69,7 @@ const AdminDashboard = () => {
     fetchClients();
   }, []);
 
-  // Filter by status and email
+  // Filter by status, email, and service type
   const filterClients = () => {
     let filtered = clients;
 
@@ -77,8 +77,8 @@ const AdminDashboard = () => {
       filtered = filtered.filter(client => client.status === activeFilter);
     }
 
-    if (saleTypeFilter !== 'all') {
-      filtered = filtered.filter(client => client.saleType === saleTypeFilter);
+    if (serviceTypeFilter !== 'all') {
+      filtered = filtered.filter(client => client.serviceType === serviceTypeFilter);
     }
 
     if (searchTerm.trim() !== '') {
@@ -89,6 +89,7 @@ const AdminDashboard = () => {
         client.employeePaymentName.toLowerCase().includes(search)
       );
     }
+
     // Apply date range filter if both dates are provided
     if (startDate && endDate) {
       const start = new Date(startDate);
@@ -106,7 +107,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     filterClients();
-  }, [searchTerm, activeFilter, clients, startDate, endDate, saleTypeFilter]);
+  }, [searchTerm, activeFilter, clients, startDate, endDate, serviceTypeFilter]);
 
   // Handle approve/reject
   const handleStatusUpdate = async (id: string, status: 'approved' | 'rejected') => {
@@ -237,9 +238,9 @@ const AdminDashboard = () => {
                 : activeFilter === 'approved'
                   ? 'Approved Submissions'
                   : 'Rejected Submissions'}
-            {saleTypeFilter !== 'all' && (
+            {serviceTypeFilter !== 'all' && (
               <span className="text-sm font-normal ml-2">
-                ({saleTypeFilter === 'new' ? 'New Sales' : 'Upsales'})
+                ({serviceTypeFilter === 'new sale' ? 'New Sales' : 'Upsales'})
               </span>
             )}
           </h2>
@@ -267,14 +268,14 @@ const AdminDashboard = () => {
               </div>
             </div>
 
-            {/* Sale Type Dropdown */}
+            {/* Service Type Dropdown */}
             <div className="relative w-full md:w-48">
               <button
                 type="button"
                 className="inline-flex justify-between w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
-                {saleTypeFilter === 'all' ? 'All Sales' : saleTypeFilter === 'new' ? 'New Sales' : 'Upsales'}
+                {serviceTypeFilter === 'all' ? 'All Sales' : serviceTypeFilter === 'new sale' ? 'New Sales' : 'Upsales'}
                 <ChevronDown className="-mr-1 ml-2 h-5 w-5" />
               </button>
 
@@ -283,28 +284,28 @@ const AdminDashboard = () => {
                   <div className="py-1" role="menu" aria-orientation="vertical">
                     <button
                       onClick={() => {
-                        setSaleTypeFilter('all');
+                        setServiceTypeFilter('all');
                         setIsDropdownOpen(false);
                       }}
-                      className={`block px-4 py-2 text-sm w-full text-left ${saleTypeFilter === 'all' ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
+                      className={`block px-4 py-2 text-sm w-full text-left ${serviceTypeFilter === 'all' ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
                     >
                       All Sales
                     </button>
                     <button
                       onClick={() => {
-                        setSaleTypeFilter('new');
+                        setServiceTypeFilter('new sale');
                         setIsDropdownOpen(false);
                       }}
-                      className={`block px-4 py-2 text-sm w-full text-left ${saleTypeFilter === 'new' ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
+                      className={`block px-4 py-2 text-sm w-full text-left ${serviceTypeFilter === 'new sale' ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
                     >
                       New Sales
                     </button>
                     <button
                       onClick={() => {
-                        setSaleTypeFilter('upsale');
+                        setServiceTypeFilter('upsale');
                         setIsDropdownOpen(false);
                       }}
-                      className={`block px-4 py-2 text-sm w-full text-left ${saleTypeFilter === 'upsale' ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
+                      className={`block px-4 py-2 text-sm w-full text-left ${serviceTypeFilter === 'upsale' ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
                     >
                       Upsales
                     </button>
