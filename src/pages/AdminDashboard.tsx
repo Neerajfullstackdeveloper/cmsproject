@@ -71,39 +71,39 @@ const AdminDashboard = () => {
 
   // Filter by status, email, and service type
   const filterClients = () => {
-    let filtered = clients;
+  let filtered = clients;
 
-    if (activeFilter !== 'all') {
-      filtered = filtered.filter(client => client.status === activeFilter);
-    }
+  if (activeFilter !== 'all') {
+    filtered = filtered.filter(client => client.status === activeFilter);
+  }
 
-    if (serviceTypeFilter !== 'all') {
-      filtered = filtered.filter(client => client.serviceType === serviceTypeFilter);
-    }
+  if (serviceTypeFilter !== 'all') {
+    filtered = filtered.filter(client => client.serviceType === serviceTypeFilter);
+  }
 
-    if (searchTerm.trim() !== '') {
-      const search = searchTerm.toLowerCase();
-      filtered = filtered.filter(client =>
-        client.email.toLowerCase().includes(search) ||
-        client.employeeName.toLowerCase().includes(search) ||
-        client.employeePaymentName.toLowerCase().includes(search)
-      );
-    }
+  if (searchTerm.trim() !== '') {
+    const search = searchTerm.toLowerCase();
+    filtered = filtered.filter(client =>
+      client.email.toLowerCase().includes(search) ||
+      client.employeeName.toLowerCase().includes(search) ||
+      client.employeePaymentName.toLowerCase().includes(search)
+    );
+  }
 
-    // Apply date range filter if both dates are provided
-    if (startDate && endDate) {
-      const start = new Date(startDate);
-      const end = new Date(endDate);
-      end.setHours(23, 59, 59, 999); // Include the entire end day
+  // Apply date range filter if both dates are provided
+  if (startDate && endDate) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    end.setHours(23, 59, 59, 999); // Include the entire end day
 
-      filtered = filtered.filter(client => {
-        const clientDate = new Date(client.createdAt);
-        return clientDate >= start && clientDate <= end;
-      });
-    }
+    filtered = filtered.filter(client => {
+      const clientDate = new Date(client.createdAt);
+      return clientDate >= start && clientDate <= end;
+    });
+  }
 
-    setFilteredClients(filtered);
-  };
+  setFilteredClients(filtered);
+};
 
   useEffect(() => {
     filterClients();
