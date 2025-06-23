@@ -73,6 +73,8 @@ const AdminDashboard = () => {
  const filterClients = () => {
   let filtered = clients;
 
+  console.log("Initial clients:", clients); // Debug log
+
   if (activeFilter !== 'all') {
     filtered = filtered.filter(client => client.status === activeFilter);
   }
@@ -84,16 +86,27 @@ const AdminDashboard = () => {
   if (searchTerm.trim() !== '') {
     const search = searchTerm.toLowerCase();
     filtered = filtered.filter(client => {
-      // Only search these three specific fields
-      return (
+      const matches = (
         (client.email && client.email.toLowerCase().includes(search)) ||
         (client.employeeName && client.employeeName.toLowerCase().includes(search)) ||
         (client.employeePaymentName && client.employeePaymentName.toLowerCase().includes(search))
       );
+      
+      console.log("Checking client:", { // Debug log
+        id: client._id,
+        email: client.email,
+        employeeName: client.employeeName,
+        employeePaymentName: client.employeePaymentName,
+        clientName: client.clientName,
+        matches: matches,
+        searchTerm: search
+      });
+      
+      return matches;
     });
   }
 
-  // Apply date range filter if both dates are provided
+  // Date filter remains the same
   if (startDate && endDate) {
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -105,6 +118,7 @@ const AdminDashboard = () => {
     });
   }
 
+  console.log("Final filtered clients:", filtered); // Debug log
   setFilteredClients(filtered);
 };
 
