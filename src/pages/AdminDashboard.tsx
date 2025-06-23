@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { Search, FileCheck, FileX, Clock, Users, ChevronDown } from 'lucide-react';
+import { Search, FileCheck, FileX, Clock, Users, ChevronDown, DollarSign } from 'lucide-react';
 import ClientList from '../components/ClientList';
 
 interface Client {
@@ -36,6 +36,8 @@ const AdminDashboard = () => {
     pending: 0,
     approved: 0,
     rejected: 0,
+    totalAmount: 0,
+    filteredAmount: 0,
   });
   const tableContainerRef = useRef<HTMLDivElement>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -55,8 +57,16 @@ const AdminDashboard = () => {
         const pending = data.data.filter((client: Client) => client.status === 'pending').length;
         const approved = data.data.filter((client: Client) => client.status === 'approved').length;
         const rejected = data.data.filter((client: Client) => client.status === 'rejected').length;
+        const totalAmount = data.data.reduce((sum: number, client: Client) => sum + client.amount, 0);
 
-        setStats({ total, pending, approved, rejected });
+        setStats({ 
+          total, 
+          pending, 
+          approved, 
+          rejected,
+          totalAmount,
+          filteredAmount: totalAmount
+        });
       }
     } catch (error) {
       toast.error('Failed to fetch submissions');
@@ -70,51 +80,58 @@ const AdminDashboard = () => {
   }, []);
 
   // Filter by status, email, and service type
-const filterClients = () => {
-  let filtered = clients;
+  const filterClients = () => {
+    let filtered = clients;
 
-  // Filter by status
-  if (activeFilter !== 'all') {
-    filtered = filtered.filter(client => client.status === activeFilter);
-  }
+    // Filter by status
+    if (activeFilter !== 'all') {
+      filtered = filtered.filter(client => client.status === activeFilter);
+    }
 
-  // Filter by service type
-  if (serviceTypeFilter !== 'all') {
-    filtered = filtered.filter(client => client.serviceType === serviceTypeFilter);
-  }
+    // Filter by service type
+    if (serviceTypeFilter !== 'all') {
+      filtered = filtered.filter(client => client.serviceType === serviceTypeFilter);
+    }
 
-  // STRICT search filtering - ONLY matches in allowed fields
-  if (searchTerm.trim() !== '') {
-    const search = searchTerm.toLowerCase();
-    filtered = filtered.filter(client => {
-      // Check allowed fields
-      const allowedFieldMatch = 
-        (client.email?.toLowerCase().includes(search)) ||
-        (client.employeeName?.toLowerCase().includes(search)) ||
-        (client.employeePaymentName?.toLowerCase().includes(search));
-      
-      // EXPLICITLY exclude clientName matches
-      const clientNameMatch = client.clientName?.toLowerCase().includes(search);
-      
-      // Only return true if it matches allowed fields AND doesn't match clientName
-      return allowedFieldMatch && !clientNameMatch;
-    });
-  }
+    // STRICT search filtering - ONLY matches in allowed fields
+    if (searchTerm.trim() !== '') {
+      const search = searchTerm.toLowerCase();
+      filtered = filtered.filter(client => {
+        // Check allowed fields
+        const allowedFieldMatch = 
+          (client.email?.toLowerCase().includes(search)) ||
+          (client.employeeName?.toLowerCase().includes(search)) ||
+          (client.employeePaymentName?.toLowerCase().includes(search));
+        
+        // EXPLICITLY exclude clientName matches
+        const clientNameMatch = client.clientName?.toLowerCase().includes(search);
+        
+        // Only return true if it matches allowed fields AND doesn't match clientName
+        return allowedFieldMatch && !clientNameMatch;
+      });
+    }
 
-  // Date filtering
-  if (startDate && endDate) {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    end.setHours(23, 59, 59, 999);
+    // Date filtering
+    if (startDate && endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      end.setHours(23, 59, 59, 999);
 
-    filtered = filtered.filter(client => {
-      const clientDate = new Date(client.createdAt);
-      return clientDate >= start && clientDate <= end;
-    });
-  }
+      filtered = filtered.filter(client => {
+        const clientDate = new Date(client.createdAt);
+        return clientDate >= start && clientDate <= end;
+      });
+    }
 
-  setFilteredClients(filtered);
-};
+    // Calculate filtered amount
+    const filteredAmount = filtered.reduce((sum, client) => sum + client.amount, 0);
+
+    setFilteredClients(filtered);
+    setStats(prev => ({
+      ...prev,
+      filteredAmount
+    }));
+  };
 
   useEffect(() => {
     filterClients();
@@ -175,8 +192,8 @@ const filterClients = () => {
         <p className="text-gray-600 mt-1">Welcome back, {user?.name}</p>
       </div>
 
-      {/* Status Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Status Summary Cards - Updated to 5 columns */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <div
           className="bg-white rounded-lg shadow-md p-6 cursor-pointer hover:bg-gray-50 transition-colors"
           onClick={() => setActiveFilter('all')}
@@ -233,6 +250,26 @@ const filterClients = () => {
             <div className="ml-4">
               <h3 className="text-sm font-medium text-gray-500">Rejected</h3>
               <p className="text-2xl font-semibold text-gray-800">{stats.rejected}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* New Amount Summary Card */}
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="flex items-center">
+            <div className="bg-purple-100 p-3 rounded-full">
+              <DollarSign className="h-6 w-6 text-purple-700" />
+            </div>
+            <div className="ml-4">
+              <h3 className="text-sm font-medium text-gray-500">Total Amount</h3>
+              <p className="text-2xl font-semibold text-gray-800">
+                ₹{stats.filteredAmount.toLocaleString('en-IN')}
+              </p>
+              {stats.filteredAmount !== stats.totalAmount && (
+                <p className="text-xs text-gray-500 mt-1">
+                  Out of ₹{stats.totalAmount.toLocaleString('en-IN')}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -331,7 +368,7 @@ const filterClients = () => {
               </div>
               <input
                 type="text"
-                placeholder="Search by email..."
+                placeholder="Search by email, employee name..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
