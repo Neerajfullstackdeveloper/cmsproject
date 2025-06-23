@@ -70,7 +70,7 @@ const AdminDashboard = () => {
   }, []);
 
   // Filter by status, email, and service type
-  const filterClients = () => {
+ const filterClients = () => {
   let filtered = clients;
 
   if (activeFilter !== 'all') {
@@ -83,18 +83,21 @@ const AdminDashboard = () => {
 
   if (searchTerm.trim() !== '') {
     const search = searchTerm.toLowerCase();
-    filtered = filtered.filter(client =>
-      client.email.toLowerCase().includes(search) ||
-      client.employeeName.toLowerCase().includes(search) ||
-      client.employeePaymentName.toLowerCase().includes(search)
-    );
+    filtered = filtered.filter(client => {
+      // Only search these three specific fields
+      return (
+        (client.email && client.email.toLowerCase().includes(search)) ||
+        (client.employeeName && client.employeeName.toLowerCase().includes(search)) ||
+        (client.employeePaymentName && client.employeePaymentName.toLowerCase().includes(search))
+      );
+    });
   }
 
   // Apply date range filter if both dates are provided
   if (startDate && endDate) {
     const start = new Date(startDate);
     const end = new Date(endDate);
-    end.setHours(23, 59, 59, 999); // Include the entire end day
+    end.setHours(23, 59, 59, 999);
 
     filtered = filtered.filter(client => {
       const clientDate = new Date(client.createdAt);
