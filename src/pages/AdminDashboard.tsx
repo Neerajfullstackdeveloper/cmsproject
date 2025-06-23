@@ -70,43 +70,38 @@ const AdminDashboard = () => {
   }, []);
 
   // Filter by status, email, and service type
- const filterClients = () => {
+const filterClients = () => {
   let filtered = clients;
 
-  console.log("Initial clients:", clients); // Debug log
-
+  // Filter by status
   if (activeFilter !== 'all') {
     filtered = filtered.filter(client => client.status === activeFilter);
   }
 
+  // Filter by service type
   if (serviceTypeFilter !== 'all') {
     filtered = filtered.filter(client => client.serviceType === serviceTypeFilter);
   }
 
+  // STRICT search filtering - ONLY matches in allowed fields
   if (searchTerm.trim() !== '') {
     const search = searchTerm.toLowerCase();
     filtered = filtered.filter(client => {
-      const matches = (
-        (client.email && client.email.toLowerCase().includes(search)) ||
-        (client.employeeName && client.employeeName.toLowerCase().includes(search)) ||
-        (client.employeePaymentName && client.employeePaymentName.toLowerCase().includes(search))
-      );
+      // Check allowed fields
+      const allowedFieldMatch = 
+        (client.email?.toLowerCase().includes(search)) ||
+        (client.employeeName?.toLowerCase().includes(search)) ||
+        (client.employeePaymentName?.toLowerCase().includes(search));
       
-      console.log("Checking client:", { // Debug log
-        id: client._id,
-        email: client.email,
-        employeeName: client.employeeName,
-        employeePaymentName: client.employeePaymentName,
-        clientName: client.clientName,
-        matches: matches,
-        searchTerm: search
-      });
+      // EXPLICITLY exclude clientName matches
+      const clientNameMatch = client.clientName?.toLowerCase().includes(search);
       
-      return matches;
+      // Only return true if it matches allowed fields AND doesn't match clientName
+      return allowedFieldMatch && !clientNameMatch;
     });
   }
 
-  // Date filter remains the same
+  // Date filtering
   if (startDate && endDate) {
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -118,7 +113,6 @@ const AdminDashboard = () => {
     });
   }
 
-  console.log("Final filtered clients:", filtered); // Debug log
   setFilteredClients(filtered);
 };
 
