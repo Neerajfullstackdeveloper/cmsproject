@@ -122,6 +122,10 @@ const AdminDashboard = () => {
         return clientDate >= start && clientDate <= end;
       });
     }
+    // Sort by date (newest first)
+  filtered = [...filtered].sort((a, b) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(); 
+  });
 
     // Calculate filtered amount
     const filteredAmount = filtered.reduce((sum, client) => sum + client.amount, 0);
