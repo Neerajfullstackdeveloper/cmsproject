@@ -133,12 +133,12 @@ if (startDate || endDate) {
     return true;
   });
 }
-  filtered = filtered.filter(client => {
-    const clientDate = new Date(client.createdAt);
-    if (start && clientDate < start) return false;
-    if (end && clientDate > end) return false;
-    return true;
-  });
+  // filtered = filtered.filter(client => {
+  //   const clientDate = new Date(client.createdAt);
+  //   if (start && clientDate < start) return false;
+  //   if (end && clientDate > end) return false;
+  //   return true;
+  // });
 }
 
     // if (startDate && endDate) {
