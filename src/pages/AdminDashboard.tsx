@@ -112,16 +112,38 @@ const AdminDashboard = () => {
     }
 
     // Date filtering
-    if (startDate && endDate) {
-      const start = new Date(startDate);
-      const end = new Date(endDate);
-      end.setHours(23, 59, 59, 999);
+    // Date filtering
+if (startDate || endDate) {
+  let start = startDate ? new Date(startDate) : null;
+  let end = endDate ? new Date(endDate) : null;
 
-      filtered = filtered.filter(client => {
-        const clientDate = new Date(client.createdAt);
-        return clientDate >= start && clientDate <= end;
-      });
-    }
+  if (start) {
+    // Start at 00:00:00
+    start.setHours(0, 0, 0, 0);
+  }
+  if (end) {
+    // End at 23:59:59
+    end.setHours(23, 59, 59, 999);
+  }
+
+  filtered = filtered.filter(client => {
+    const clientDate = new Date(client.createdAt);
+    if (start && clientDate < start) return false;
+    if (end && clientDate > end) return false;
+    return true;
+  });
+}
+
+    // if (startDate && endDate) {
+    //   const start = new Date(startDate);
+    //   const end = new Date(endDate);
+    //   end.setHours(23, 59, 59, 999);
+
+    //   filtered = filtered.filter(client => {
+    //     const clientDate = new Date(client.createdAt);
+    //     return clientDate >= start && clientDate <= end;
+    //   });
+    // }
     // Sort by date (newest first)
   filtered = [...filtered].sort((a, b) => {
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(); 
