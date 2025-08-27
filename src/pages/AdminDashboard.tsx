@@ -79,6 +79,15 @@ const AdminDashboard = () => {
     fetchClients();
   }, []);
 
+  function parseDateInput(dateStr: string, endOfDay = false) {
+  if (!dateStr) return null;
+  const [year, month, day] = dateStr.split('-').map(Number);
+  if (endOfDay) {
+    return new Date(year, month - 1, day, 23, 59, 59, 999); // Local end of day
+  }
+  return new Date(year, month - 1, day, 0, 0, 0, 0); // Local start of day
+}
+
   // Filter by status, email, and service type
   const filterClients = () => {
     let filtered = clients;
@@ -114,18 +123,16 @@ const AdminDashboard = () => {
     // Date filtering
     // Date filtering
 if (startDate || endDate) {
-  let start = startDate ? new Date(startDate) : null;
-  let end = endDate ? new Date(endDate) : null;
+  const start = startDate ? parseDateInput(startDate) : null;
+  const end = endDate ? parseDateInput(endDate, true) : null;
 
-  if (start) {
-    // Start at 00:00:00
-    start.setHours(0, 0, 0, 0);
-  }
-  if (end) {
-    // End at 23:59:59
-    end.setHours(23, 59, 59, 999);
-  }
-
+  filtered = filtered.filter(client => {
+    const clientDate = new Date(client.createdAt);
+    if (start && clientDate < start) return false;
+    if (end && clientDate > end) return false;
+    return true;
+  });
+}
   filtered = filtered.filter(client => {
     const clientDate = new Date(client.createdAt);
     if (start && clientDate < start) return false;
