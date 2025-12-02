@@ -104,6 +104,10 @@ const EmployeeDashboard = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">New Client Submission</h2>
           <ClientForm onSubmit={handleFormSubmit} />
+          {/* Show all email templates below the form for quick sending */}
+          <div className="mt-6">
+            <EmailTemplatePanel />
+          </div>
         </div>
       ) : (
         <>
