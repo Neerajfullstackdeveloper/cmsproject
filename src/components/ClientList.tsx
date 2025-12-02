@@ -22,10 +22,11 @@ interface ClientListProps {
   loading: boolean;
   isAdmin: boolean;
   onStatusUpdate: (id: string, status: 'approved' | 'rejected') => void;
+  onSelectClient?: (client: Client) => void;
   emptyMessage: string;
 }
 
-const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, emptyMessage }: ClientListProps) => {
+const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, onSelectClient, emptyMessage }: ClientListProps) => {
   if (loading) {
     return (
       <div className="p-6 text-center">
@@ -104,6 +105,9 @@ const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, emptyMessage }:
                 Actions
               </th>
             )}
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Email
+            </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -181,6 +185,14 @@ const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, emptyMessage }:
                   )}
                 </td>
               )}
+              <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <button
+                  onClick={() => onSelectClient && onSelectClient(client)}
+                  className="text-blue-600 hover:text-blue-800 transition-colors"
+                >
+                  Email
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
 import { toast } from 'react-toastify';
 
@@ -50,7 +50,15 @@ const templates: Template[] = [
     },
 ];
 
-const EmailTemplatePanel = () => {
+interface EmailTemplatePanelProps {
+    selectedClient?: {
+        email?: string;
+        clientName?: string;
+        amount?: number | string;
+    } | null;
+}
+
+const EmailTemplatePanel = ({ selectedClient }: EmailTemplatePanelProps) => {
     const [selectedId, setSelectedId] = useState<string>(templates[0].id);
     const [to, setTo] = useState('');
     const [recipientName, setRecipientName] = useState('');
@@ -58,6 +66,15 @@ const EmailTemplatePanel = () => {
     const [subject, setSubject] = useState(templates[0].subject);
     const [body, setBody] = useState(templates[0].body);
     const [sending, setSending] = useState(false);
+
+    // Prefill when selectedClient prop changes
+    useEffect(() => {
+        if (selectedClient) {
+            if (selectedClient.email) setTo(selectedClient.email);
+            if (selectedClient.clientName) setRecipientName(selectedClient.clientName);
+            if (selectedClient.amount) setAmount(String(selectedClient.amount));
+        }
+    }, [selectedClient]);
 
     const handleSelect = (id: string) => {
         const t = templates.find((x) => x.id === id)!;

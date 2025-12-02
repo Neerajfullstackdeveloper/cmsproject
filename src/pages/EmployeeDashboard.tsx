@@ -24,6 +24,7 @@ const EmployeeDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [showEmailPanel, setShowEmailPanel] = useState(false);
+  const [selectedClient, setSelectedClient] = useState<any | null>(null);
   const [stats, setStats] = useState({
     total: 0,
     pending: 0,
@@ -161,14 +162,18 @@ const EmployeeDashboard = () => {
               <h2 className="text-xl font-semibold text-gray-800">Your Submissions</h2>
             </div>
             
-            <ClientList
-              clients={clients}
-              loading={loading}
-              isAdmin={false}
-              onStatusUpdate={() => {}}
-              emptyMessage="You haven't submitted any client data yet."
-            />
-            {showEmailPanel && <EmailTemplatePanel />}
+              <ClientList
+                clients={clients as any}
+                loading={loading}
+                isAdmin={false}
+                onStatusUpdate={() => {}}
+                onSelectClient={(client) => {
+                  setSelectedClient(client);
+                  setShowEmailPanel(true);
+                }}
+                emptyMessage="You haven't submitted any client data yet."
+              />
+              {showEmailPanel && <EmailTemplatePanel selectedClient={selectedClient as any} />}
           </div>
         </>
       )}
