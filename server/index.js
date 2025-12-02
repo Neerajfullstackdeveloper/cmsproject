@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url';
 // Import routes
 import authRoutes from './routes/auth.js';
 import clientRoutes from './routes/clients.js';
+import emailRoutes from './routes/email.js';
 
 // Load environment variables
 dotenv.config();
@@ -36,6 +37,7 @@ mongoose.connect(process.env.MONGODB_URI)
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/clients', clientRoutes);
+app.use('/api/email', emailRoutes);
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {

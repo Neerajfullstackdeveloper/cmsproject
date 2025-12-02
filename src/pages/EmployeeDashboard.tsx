@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { Plus, FileCheck, FileX, Clock } from 'lucide-react';
 import ClientForm from '../components/ClientForm';
 import ClientList from '../components/ClientList';
+import EmailTemplatePanel from '../components/EmailTemplatePanel';
 
 interface Client {
   _id: string;
@@ -22,6 +23,7 @@ const EmployeeDashboard = () => {
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [showEmailPanel, setShowEmailPanel] = useState(false);
   const [stats, setStats] = useState({
     total: 0,
     pending: 0,
@@ -88,6 +90,12 @@ const EmployeeDashboard = () => {
               New Submission
             </>
           )}
+        </button>
+        <button
+          onClick={() => setShowEmailPanel(!showEmailPanel)}
+          className="mt-4 md:mt-0 ml-2 flex items-center px-4 py-2 bg-green-700 text-white rounded-md hover:bg-green-800 transition-colors"
+        >
+          {showEmailPanel ? 'Close Email' : 'Email Templates'}
         </button>
       </div>
       
@@ -160,6 +168,7 @@ const EmployeeDashboard = () => {
               onStatusUpdate={() => {}}
               emptyMessage="You haven't submitted any client data yet."
             />
+            {showEmailPanel && <EmailTemplatePanel />}
           </div>
         </>
       )}
