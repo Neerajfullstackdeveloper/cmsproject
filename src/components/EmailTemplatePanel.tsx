@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import emailjs from '@emailjs/browser';
 import { toast } from 'react-toastify';
 
 interface Template {
@@ -47,17 +47,33 @@ const EmailTemplatePanel = () => {
   const handleSend = async () => {
     if (!to) return toast.error('Please provide recipient email');
     setSending(true);
+
+    // EmailJS requires you to set Vite env vars:
+    // VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey) {
+      toast.error('EmailJS not configured. Set VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY');
+      setSending(false);
+      return;
+    }
+
     try {
-      await axios.post('/email/send', {
-        to,
+      const templateParams = {
+        to_email: to,
         subject,
-        html: body,
-      });
+        message: body,
+        // optional: from_name or other template variables
+      };
+
+      const result = await emailjs.send(serviceId, templateId, templateParams, publicKey);
+      // result.status === 200 on success
       toast.success('Email sent successfully');
       setTo('');
     } catch (err: any) {
-      const msg = err?.response?.data?.message || err.message || 'Failed to send email';
-      toast.error(msg);
+      toast.error(err?.text || err?.message || 'Failed to send email via EmailJS');
     } finally {
       setSending(false);
     }
