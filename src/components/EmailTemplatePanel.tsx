@@ -50,6 +50,13 @@ const templates: Template[] = [
     },
 ];
 
+interface ServicePackage {
+    id: string;
+    name: string;
+    emailSubject: string;
+    emailBody: string;
+}
+
 interface EmailTemplatePanelProps {
     selectedClient?: {
         email?: string;
@@ -57,9 +64,11 @@ interface EmailTemplatePanelProps {
         amount?: number | string;
     } | null;
     lockToFormEmail?: boolean;
+    servicePackages?: ServicePackage[];
+    selectedPackage?: string;
 }
 
-const EmailTemplatePanel = ({ selectedClient, lockToFormEmail }: EmailTemplatePanelProps) => {
+const EmailTemplatePanel = ({ selectedClient, lockToFormEmail, servicePackages, selectedPackage }: EmailTemplatePanelProps) => {
     const [selectedId, setSelectedId] = useState<string>(templates[0].id);
     const [to, setTo] = useState('');
     const [recipientName, setRecipientName] = useState('');
@@ -67,6 +76,17 @@ const EmailTemplatePanel = ({ selectedClient, lockToFormEmail }: EmailTemplatePa
     const [subject, setSubject] = useState(templates[0].subject);
     const [body, setBody] = useState(templates[0].body);
     const [sending, setSending] = useState(false);
+
+    // When using service packages and one is selected, use its email content
+    useEffect(() => {
+        if (lockToFormEmail && servicePackages && selectedPackage) {
+            const pkg = servicePackages.find(p => p.name === selectedPackage);
+            if (pkg) {
+                setSubject(pkg.emailSubject);
+                setBody(pkg.emailBody);
+            }
+        }
+    }, [selectedPackage, lockToFormEmail, servicePackages]);
 
     // Prefill when selectedClient prop changes
     useEffect(() => {
@@ -193,8 +213,11 @@ const EmailTemplatePanel = ({ selectedClient, lockToFormEmail }: EmailTemplatePa
                         <input
                             type="text"
                             value={subject}
-                            onChange={(e) => setSubject(e.target.value)}
-                            className="mt-1 block w-full border rounded-md px-3 py-2"
+                            onChange={(e) => !lockToFormEmail && setSubject(e.target.value)}
+                            disabled={lockToFormEmail}
+                            className={`mt-1 block w-full border rounded-md px-3 py-2 ${
+                                lockToFormEmail ? 'bg-gray-50 text-gray-600 cursor-not-allowed' : ''
+                            }`}
                         />
                     </div>
 
@@ -202,8 +225,11 @@ const EmailTemplatePanel = ({ selectedClient, lockToFormEmail }: EmailTemplatePa
                         <label className="block text-sm font-medium text-gray-700">Body (HTML)</label>
                         <textarea
                             value={body}
-                            onChange={(e) => setBody(e.target.value)}
-                            className="mt-1 block w-full border rounded-md px-3 py-2 h-40"
+                            onChange={(e) => !lockToFormEmail && setBody(e.target.value)}
+                            disabled={lockToFormEmail}
+                            className={`mt-1 block w-full border rounded-md px-3 py-2 h-40 ${
+                                lockToFormEmail ? 'bg-gray-50 text-gray-600 cursor-not-allowed' : ''
+                            }`}
                         />
                     </div>
 

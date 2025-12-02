@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Plus, FileCheck, FileX, Clock } from 'lucide-react';
-import ClientForm from '../components/ClientForm';
+import ClientForm, { servicePackages } from '../components/ClientForm';
 import ClientList from '../components/ClientList';
 import EmailTemplatePanel from '../components/EmailTemplatePanel';
 
@@ -24,7 +24,6 @@ const EmployeeDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [showEmailPanel, setShowEmailPanel] = useState(false);
-  const [selectedClient, setSelectedClient] = useState<any | null>(null);
   const [formValues, setFormValues] = useState<any | null>(null);
   const [stats, setStats] = useState({
     total: 0,
@@ -105,9 +104,9 @@ const EmployeeDashboard = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">New Client Submission</h2>
           <ClientForm onSubmit={handleFormSubmit} onChange={(vals) => setFormValues(vals)} />
-          {/* Show all email templates below the form for quick sending */}
+          {/* Show email template below the form based on selected service package */}
           <div className="mt-6">
-            <EmailTemplatePanel selectedClient={formValues as any} lockToFormEmail={true} />
+            <EmailTemplatePanel selectedClient={formValues as any} lockToFormEmail={true} servicePackages={servicePackages} selectedPackage={formValues?.serviceName} />
           </div>
         </div>
       ) : (
@@ -167,18 +166,13 @@ const EmployeeDashboard = () => {
               <h2 className="text-xl font-semibold text-gray-800">Your Submissions</h2>
             </div>
             
-              <ClientList
-                clients={clients as any}
-                loading={loading}
-                isAdmin={false}
-                onStatusUpdate={() => {}}
-                onSelectClient={(client) => {
-                  setSelectedClient(client);
-                  setShowEmailPanel(true);
-                }}
-                emptyMessage="You haven't submitted any client data yet."
-              />
-              {showEmailPanel && <EmailTemplatePanel selectedClient={selectedClient as any} />}
+            <ClientList
+              clients={clients as any}
+              loading={loading}
+              isAdmin={false}
+              onStatusUpdate={() => {}}
+              emptyMessage="You haven't submitted any client data yet."
+            />
           </div>
         </>
       )}

@@ -20,6 +20,40 @@ interface FormData {
   paymentType: 'companyscanner' | 'phonepay' | 'gateway' | 'banktransfer';
 }
 
+interface ServicePackage {
+  id: string;
+  name: string;
+  emailSubject: string;
+  emailBody: string;
+}
+
+const servicePackages: ServicePackage[] = [
+  {
+    id: 'seo',
+    name: 'Our SEO Package',
+    emailSubject: 'Our SEO Package',
+    emailBody: `<p>Hi {{name}},</p><p>Welcome to our SEO Package! We are excited to help you improve your online visibility, boost search rankings, and grow your digital presence. Our team will work closely with you to ensure your website achieves better performance and long-term organic success.</p><p>Regards,<br/>Team</p>`,
+  },
+  {
+    id: 'standard',
+    name: 'Our Standard Package',
+    emailSubject: 'Invoice for Your Recent Service',
+    emailBody: `<p>Hi {{name}},</p><p>Please find attached the invoice for the recent service under our Standard Package. The total payable amount is: {{amount}}. If you have any questions or need clarification, feel free to reach out.</p><p>Regards,<br/>Accounting</p>`,
+  },
+  {
+    id: 'advanced',
+    name: 'Our Advanced Package',
+    emailSubject: 'Quick Follow Up',
+    emailBody: `<p>Hi {{name}},</p><p>Just following up on our previous conversation regarding our Advanced Package. If you have any questions or need more details about the features, benefits, or setup process, feel free to reach out—we're here to assist you.</p><p>Thanks,<br/>Team</p>`,
+  },
+  {
+    id: 'googlevirtualtool',
+    name: 'Google Virtual Tool',
+    emailSubject: 'Quick Follow Up',
+    emailBody: `<p>Hi {{name}},</p><p>Just following up on our previous conversation regarding the Google Virtual Tool. If you have any questions about setup, features, or how to get started, feel free to let us know—we're here to help.</p><p>Thanks,<br/>Team</p>`,
+  },
+];
+
 const ClientForm = ({ onSubmit, onChange }: ClientFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -201,16 +235,20 @@ const ClientForm = ({ onSubmit, onChange }: ClientFormProps) => {
         
         <div>
           <label htmlFor="serviceName" className="block text-sm font-medium text-gray-700 mb-1">
-            Service Name <span className="text-red-500">*</span>
+            Service Package <span className="text-red-500">*</span>
           </label>
-          <input
+          <select
             id="serviceName"
-            type="text"
-            {...register('serviceName', { required: 'Service name is required' })}
+            {...register('serviceName', { required: 'Service package is required' })}
             className={`w-full px-4 py-2 border ${
               errors.serviceName ? 'border-red-500' : 'border-gray-300'
             } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
-          />
+          >
+            <option value="">Select a package</option>
+            {servicePackages.map((pkg) => (
+              <option key={pkg.id} value={pkg.name}>{pkg.name}</option>
+            ))}
+          </select>
           {errors.serviceName && (
             <p className="mt-1 text-sm text-red-600">{errors.serviceName.message}</p>
           )}
@@ -283,4 +321,5 @@ const ClientForm = ({ onSubmit, onChange }: ClientFormProps) => {
   );
 };
 
+export { servicePackages };
 export default ClientForm;
