@@ -148,27 +148,9 @@ const EmailTemplatePanel = ({ selectedClient, lockToFormEmail, servicePackages, 
 
     return (
         <div className="bg-white rounded-lg shadow-md p-6 mt-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Email Templates</h2>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Email Package</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                    <h3 className="font-medium mb-2">Templates</h3>
-                    <div className="space-y-2">
-                        {templates.map((t) => (
-                            <label key={t.id} className="flex items-center space-x-2">
-                                <input
-                                    type="radio"
-                                    name="template"
-                                    checked={selectedId === t.id}
-                                    onChange={() => handleSelect(t.id)}
-                                />
-                                <span>{t.name}</span>
-                            </label>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="md:col-span-2">
+            <div>
                     {!lockToFormEmail && (
                         <div className="mb-3">
                             <label className="block text-sm font-medium text-gray-700">To</label>
@@ -232,17 +214,6 @@ const EmailTemplatePanel = ({ selectedClient, lockToFormEmail, servicePackages, 
                             }`}
                         />
                     </div>
-
-                    <div className="flex justify-end">
-                        <button
-                            onClick={handleSend}
-                            disabled={sending}
-                            className="px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-800 disabled:opacity-60"
-                        >
-                            {sending ? 'Sending...' : 'Send Email'}
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
     );
