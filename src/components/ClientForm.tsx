@@ -16,6 +16,7 @@ interface FormData {
   gstNumber: string;
   email: string;
   serviceName: string;
+  paymentStage?: 'token' | 'first' | 'second' | 'third' | 'final';
   serviceType: 'new sale' | 'upsale';
   paymentType: 'companyscanner' | 'phonepay' | 'gateway' | 'banktransfer';
 }
@@ -78,6 +79,26 @@ const ClientForm = ({ onSubmit, onChange }: ClientFormProps) => {
       reset();
     } finally {
       setIsSubmitting(false);
+
+        <div>
+          <label htmlFor="paymentStage" className="block text-sm font-medium text-gray-700 mb-1">
+            Payment Stage
+          </label>
+          <select
+            id="paymentStage"
+            {...register('paymentStage')}
+            className={`w-full px-4 py-2 border ${
+              errors.paymentStage ? 'border-red-500' : 'border-gray-300'
+            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+          >
+            <option value="">Select stage</option>
+            <option value="token">Token Amount</option>
+            <option value="first">First Settlement</option>
+            <option value="second">Second Settlement</option>
+            <option value="third">Third Settlement</option>
+            <option value="final">Final Settlement</option>
+          </select>
+        </div>
     }
   };
 
@@ -284,7 +305,7 @@ const ClientForm = ({ onSubmit, onChange }: ClientFormProps) => {
               errors.paymentType ? 'border-red-500' : 'border-gray-300'
             } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
           >
-            <option value="">Select payment type</option>
+            <option value="">Select payment way</option>
             <option value="companyscanner">Company scanner</option>
             <option value="phonepay">Phone pay</option>
             <option value="gateway">Website gateway</option>
