@@ -214,6 +214,16 @@ const EmailTemplatePanel = ({ selectedClient, lockToFormEmail, servicePackages, 
                             }`}
                         />
                     </div>
+
+                    <div className="flex justify-end">
+                        <button
+                            onClick={handleSend}
+                            disabled={sending}
+                            className="px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-800 disabled:opacity-60"
+                        >
+                            {sending ? 'Sending...' : 'Send Email'}
+                        </button>
+                    </div>
             </div>
         </div>
     );
