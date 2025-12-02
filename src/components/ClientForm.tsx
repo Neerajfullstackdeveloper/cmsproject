@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useState, useEffect } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
 
 interface ClientFormProps {
   onSubmit: (data: any) => void;
+  onChange?: (values: Partial<FormData>) => void;
 }
 
 interface FormData {
@@ -19,15 +20,22 @@ interface FormData {
   paymentType: 'companyscanner' | 'phonepay' | 'gateway' | 'banktransfer';
 }
 
-const ClientForm = ({ onSubmit }: ClientFormProps) => {
+const ClientForm = ({ onSubmit, onChange }: ClientFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
+    control,
   } = useForm<FormData>();
+
+  const watched = useWatch({ control });
+
+  useEffect(() => {
+    if (onChange) onChange(watched || {});
+  }, [watched, onChange]);
   
   const onFormSubmit = async (data: FormData) => {
     setIsSubmitting(true);

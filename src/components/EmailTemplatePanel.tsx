@@ -56,9 +56,10 @@ interface EmailTemplatePanelProps {
         clientName?: string;
         amount?: number | string;
     } | null;
+    lockToFormEmail?: boolean;
 }
 
-const EmailTemplatePanel = ({ selectedClient }: EmailTemplatePanelProps) => {
+const EmailTemplatePanel = ({ selectedClient, lockToFormEmail }: EmailTemplatePanelProps) => {
     const [selectedId, setSelectedId] = useState<string>(templates[0].id);
     const [to, setTo] = useState('');
     const [recipientName, setRecipientName] = useState('');
@@ -115,7 +116,7 @@ const EmailTemplatePanel = ({ selectedClient }: EmailTemplatePanelProps) => {
             toast.success(`EmailJS sent (status ${result.status})`);
             // show detailed info for debugging
             toast.info(JSON.stringify(result.text || result), { autoClose: 4000 });
-            setTo('');
+            if (!lockToFormEmail) setTo('');
         } catch (err: any) {
             console.error('EmailJS send error:', err);
             const msg = err?.text || err?.status || err?.message || JSON.stringify(err);
@@ -150,13 +151,17 @@ const EmailTemplatePanel = ({ selectedClient }: EmailTemplatePanelProps) => {
                 <div className="md:col-span-2">
                     <div className="mb-3">
                         <label className="block text-sm font-medium text-gray-700">To</label>
-                        <input
-                            type="email"
-                            value={to}
-                            onChange={(e) => setTo(e.target.value)}
-                            className="mt-1 block w-full border rounded-md px-3 py-2"
-                            placeholder="recipient@example.com"
-                        />
+                        {lockToFormEmail ? (
+                            <div className="mt-1 block w-full border rounded-md px-3 py-2 bg-gray-50 text-gray-700">{to || 'No email provided in form'}</div>
+                        ) : (
+                            <input
+                                type="email"
+                                value={to}
+                                onChange={(e) => setTo(e.target.value)}
+                                className="mt-1 block w-full border rounded-md px-3 py-2"
+                                placeholder="recipient@example.com"
+                            />
+                        )}
                     </div>
 
                     <div className="mb-3 grid grid-cols-1 sm:grid-cols-2 gap-3">

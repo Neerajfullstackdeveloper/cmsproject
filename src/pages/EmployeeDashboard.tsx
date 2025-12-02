@@ -25,6 +25,7 @@ const EmployeeDashboard = () => {
   const [showForm, setShowForm] = useState(false);
   const [showEmailPanel, setShowEmailPanel] = useState(false);
   const [selectedClient, setSelectedClient] = useState<any | null>(null);
+  const [formValues, setFormValues] = useState<any | null>(null);
   const [stats, setStats] = useState({
     total: 0,
     pending: 0,
@@ -103,10 +104,10 @@ const EmployeeDashboard = () => {
       {showForm ? (
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">New Client Submission</h2>
-          <ClientForm onSubmit={handleFormSubmit} />
+          <ClientForm onSubmit={handleFormSubmit} onChange={(vals) => setFormValues(vals)} />
           {/* Show all email templates below the form for quick sending */}
           <div className="mt-6">
-            <EmailTemplatePanel />
+            <EmailTemplatePanel selectedClient={formValues as any} lockToFormEmail={true} />
           </div>
         </div>
       ) : (
