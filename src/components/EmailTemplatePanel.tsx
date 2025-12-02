@@ -23,7 +23,7 @@ const templates: Template[] = [
     {
         id: 'invoice',
         name: 'Our Standard Package',
-        subject: 'Invoice for Your Recent Service',
+        subject: 'Our Standard Package',
         body: `<p>Hi {{name}},</p>
 
 <p>Please find attached the invoice for the recent service under our Standard Package. The total payable amount is: {{amount}}. If you have any questions or need clarification, feel free to reach out.</p>
@@ -33,7 +33,7 @@ const templates: Template[] = [
     {
         id: 'followup',
         name: 'Our Advanced Package',
-        subject: 'Quick Follow Up',
+        subject: 'Our Advanced Package',
         body: `<p>Hi {{name}},</p>
 
 <p>Just following up on our previous conversation regarding our Advanced Package. If you have any questions or need more details about the features, benefits, or setup process, feel free to reach out—we’re here to assist you.</p>
@@ -43,7 +43,7 @@ const templates: Template[] = [
     {
         id: 'googlevirtualtool',
         name: 'Google Virtual Tool',
-        subject: 'Quick Follow Up',
+        subject: 'Google Virtual Tool',
         body: `<p>Hi {{name}},</p>
 <p>Just following up on our previous conversation regarding the Google Virtual Tool. If you have any questions about setup, features, or how to get started, feel free to let us know—we’re here to help.</p>
 <p>Thanks,<br/>Team</p>`,
