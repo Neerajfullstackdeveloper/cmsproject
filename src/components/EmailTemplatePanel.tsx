@@ -149,11 +149,9 @@ const EmailTemplatePanel = ({ selectedClient, lockToFormEmail }: EmailTemplatePa
                 </div>
 
                 <div className="md:col-span-2">
-                    <div className="mb-3">
-                        <label className="block text-sm font-medium text-gray-700">To</label>
-                        {lockToFormEmail ? (
-                            <div className="mt-1 block w-full border rounded-md px-3 py-2 bg-gray-50 text-gray-700">{to || 'No email provided in form'}</div>
-                        ) : (
+                    {!lockToFormEmail && (
+                        <div className="mb-3">
+                            <label className="block text-sm font-medium text-gray-700">To</label>
                             <input
                                 type="email"
                                 value={to}
@@ -161,8 +159,8 @@ const EmailTemplatePanel = ({ selectedClient, lockToFormEmail }: EmailTemplatePa
                                 className="mt-1 block w-full border rounded-md px-3 py-2"
                                 placeholder="recipient@example.com"
                             />
-                        )}
-                    </div>
+                        </div>
+                    )}
 
                     <div className="mb-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
