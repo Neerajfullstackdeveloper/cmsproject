@@ -12,7 +12,7 @@ interface Template {
 const templates: Template[] = [
     {
         id: 'welcome',
-        name: 'Welcome Client',
+        name: 'Our Seo Package',
         subject: 'Our Seo Package',
         body: `<p>Hi {{name}},</p>
 
@@ -162,29 +162,31 @@ const EmailTemplatePanel = ({ selectedClient, lockToFormEmail }: EmailTemplatePa
                         </div>
                     )}
 
-                    <div className="mb-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Name (for template)</label>
-                            <input
-                                type="text"
-                                value={recipientName}
-                                onChange={(e) => setRecipientName(e.target.value)}
-                                className="mt-1 block w-full border rounded-md px-3 py-2"
-                                placeholder="Client name (optional)"
-                            />
-                        </div>
+                    {!lockToFormEmail && (
+                        <div className="mb-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Name (for template)</label>
+                                <input
+                                    type="text"
+                                    value={recipientName}
+                                    onChange={(e) => setRecipientName(e.target.value)}
+                                    className="mt-1 block w-full border rounded-md px-3 py-2"
+                                    placeholder="Client name (optional)"
+                                />
+                            </div>
 
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Amount (optional)</label>
-                            <input
-                                type="text"
-                                value={amount}
-                                onChange={(e) => setAmount(e.target.value)}
-                                className="mt-1 block w-full border rounded-md px-3 py-2"
-                                placeholder="e.g. $199"
-                            />
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Amount (optional)</label>
+                                <input
+                                    type="text"
+                                    value={amount}
+                                    onChange={(e) => setAmount(e.target.value)}
+                                    className="mt-1 block w-full border rounded-md px-3 py-2"
+                                    placeholder="e.g. $199"
+                                />
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     <div className="mb-3">
                         <label className="block text-sm font-medium text-gray-700">Subject</label>
