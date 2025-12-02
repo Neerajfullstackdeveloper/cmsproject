@@ -92,12 +92,12 @@ const EmployeeDashboard = () => {
             </>
           )}
         </button>
-        <button
+        {/* <button
           onClick={() => setShowEmailPanel(!showEmailPanel)}
           className="mt-4 md:mt-0 ml-2 flex items-center px-4 py-2 bg-green-700 text-white rounded-md hover:bg-green-800 transition-colors"
         >
           {showEmailPanel ? 'Close Email' : 'Email Templates'}
-        </button>
+        </button> */}
       </div>
       
       {showForm ? (
