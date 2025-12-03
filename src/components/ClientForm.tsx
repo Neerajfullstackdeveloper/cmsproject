@@ -277,7 +277,7 @@ const ClientForm = ({ onSubmit, onChange }: ClientFormProps) => {
         </div>
         <div>
           <label htmlFor="paymentType" className="block text-sm font-medium text-gray-700 mb-1">
-            Payment Type <span className="text-red-500">*</span>
+            Payment Way <span className="text-red-500">*</span>
           </label>
           <select
             id="paymentType"
@@ -299,7 +299,7 @@ const ClientForm = ({ onSubmit, onChange }: ClientFormProps) => {
         
         <div>
           <label htmlFor="paymentStage" className="block text-sm font-medium text-gray-700 mb-1">
-            Payment Stage
+            Payment Type <span className="text-red-500">*</span>
           </label>
           <select
             id="paymentStage"
