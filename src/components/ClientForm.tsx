@@ -308,7 +308,7 @@ const ClientForm = ({ onSubmit, onChange }: ClientFormProps) => {
               errors.paymentStage ? 'border-red-500' : 'border-gray-300'
             } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
           >
-            <option value="">Select stage</option>
+            <option value="">Select type</option>
             <option value="token">Token Amount</option>
             <option value="first">First Settlement</option>
             <option value="second">Second Settlement</option>
