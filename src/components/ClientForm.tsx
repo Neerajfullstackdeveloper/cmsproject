@@ -19,6 +19,8 @@ interface FormData {
   paymentStage?: 'token' | 'first' | 'second' | 'third' | 'final';
   serviceType: 'new sale' | 'upsale';
   paymentType: 'companyscanner' | 'phonepay' | 'gateway' | 'banktransfer';
+  tenureStartDate?: string;
+  tenureEndDate?: string;
 }
 
 interface ServicePackage {
@@ -57,6 +59,7 @@ const servicePackages: ServicePackage[] = [
 
 const ClientForm = ({ onSubmit, onChange }: ClientFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showTenure, setShowTenure] = useState(false);
   
   const {
     register,
@@ -277,7 +280,7 @@ const ClientForm = ({ onSubmit, onChange }: ClientFormProps) => {
         </div>
         <div>
           <label htmlFor="paymentType" className="block text-sm font-medium text-gray-700 mb-1">
-            Payment Way <span className="text-red-500">*</span>
+            Payment Mode <span className="text-red-500">*</span>
           </label>
           <select
             id="paymentType"
@@ -286,7 +289,7 @@ const ClientForm = ({ onSubmit, onChange }: ClientFormProps) => {
               errors.paymentType ? 'border-red-500' : 'border-gray-300'
             } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
           >
-            <option value="">Select payment way</option>
+            <option value="">Select payment mode</option>
             <option value="companyscanner">Company scanner</option>
             <option value="phonepay">Phone pay</option>
             <option value="gateway">Website gateway</option>
@@ -316,6 +319,59 @@ const ClientForm = ({ onSubmit, onChange }: ClientFormProps) => {
             <option value="final">Final Settlement</option>
           </select>
         </div>
+
+        <div className="flex items-start space-x-4">
+          <button
+            type="button"
+            onClick={() => setShowTenure((v) => !v)}
+            className="px-4 py-2 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Set Tenure
+          </button>
+        </div>
+
+        {showTenure && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label htmlFor="tenureStartDate" className="block text-sm font-medium text-gray-700 mb-1">
+                Tenure Start Date
+              </label>
+              <input
+                id="tenureStartDate"
+                type="date"
+                {...register('tenureStartDate')}
+                className={`w-full px-4 py-2 border ${
+                  errors.tenureStartDate ? 'border-red-500' : 'border-gray-300'
+                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              />
+              {errors.tenureStartDate && (
+                <p className="mt-1 text-sm text-red-600">{errors.tenureStartDate.message as string}</p>
+              )}
+            </div>
+            <div>
+              <label htmlFor="tenureEndDate" className="block text-sm font-medium text-gray-700 mb-1">
+                Tenure End Date
+              </label>
+              <input
+                id="tenureEndDate"
+                type="date"
+                {...register('tenureEndDate', {
+                  validate: (value) => {
+                    const start = (watched as any)?.tenureStartDate;
+                    if (!value || !start) return true;
+                    return new Date(value) >= new Date(start) || 'End date must be after start date';
+                  },
+                })}
+                className={`w-full px-4 py-2 border ${
+                  errors.tenureEndDate ? 'border-red-500' : 'border-gray-300'
+                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              />
+              {errors.tenureEndDate && (
+                <p className="mt-1 text-sm text-red-600">{errors.tenureEndDate.message as string}</p>
+              )}
+            </div>
+          </div>
+        )}
       </div>
       
       <div className="flex justify-end">
