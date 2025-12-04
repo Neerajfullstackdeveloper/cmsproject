@@ -69,6 +69,14 @@ const clientSchema = new mongoose.Schema({
     enum: ['companyscanner', 'phonepay','gateway', 'banktransfer'],
     required: [true, 'Please specify what was the payment mode']
   },
+  tenureStartDate: {
+    type: Date,
+    required: false
+  },
+  tenureEndDate: {
+    type: Date,
+    required: false
+  },
   status: {
     type: String,
     enum: ['pending', 'approved', 'rejected'],

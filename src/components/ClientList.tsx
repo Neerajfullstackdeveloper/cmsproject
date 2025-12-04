@@ -14,6 +14,8 @@ interface Client {
   amount: number;
   status: 'pending' | 'approved' | 'rejected';
   paymentType: 'companyscanner' | 'phonepay' | 'gateway' | 'banktransfer';
+  tenureStartDate?: string;
+  tenureEndDate?: string;
   createdAt: string;
 }
 
@@ -96,6 +98,11 @@ const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, emptyMessage }:
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Payment Mode
             </th>
+            {isAdmin && (
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Tenure
+              </th>
+            )}
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Status
             </th>
@@ -140,6 +147,15 @@ const ClientList = ({ clients, loading, isAdmin, onStatusUpdate, emptyMessage }:
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm font-medium text-gray-900">{client.paymentType}</div>
               </td>
+              {isAdmin && (
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">
+                    {client.tenureStartDate && client.tenureEndDate
+                      ? `${formatDate(client.tenureStartDate)} — ${formatDate(client.tenureEndDate)}`
+                      : '—'}
+                  </div>
+                </td>
+              )}
               <td className="px-6 py-4 whitespace-nowrap">
                 <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeClass(client.status)}`}>
                   {client.status.charAt(0).toUpperCase() + client.status.slice(1)}

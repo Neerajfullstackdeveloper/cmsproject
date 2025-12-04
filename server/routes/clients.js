@@ -57,7 +57,9 @@ router.post('/', authenticate, authorize('employee'), async (req, res) => {
       email,
       serviceName,
       serviceType,
-      paymentType
+      paymentType,
+      tenureStartDate,
+      tenureEndDate,
     } = req.body;
     
     const newClient = new Client({
@@ -74,6 +76,8 @@ router.post('/', authenticate, authorize('employee'), async (req, res) => {
       serviceName,
       serviceType,
       paymentType,
+      tenureStartDate: tenureStartDate ? new Date(tenureStartDate) : undefined,
+      tenureEndDate: tenureEndDate ? new Date(tenureEndDate) : undefined,
       status: 'pending'
     });
     
