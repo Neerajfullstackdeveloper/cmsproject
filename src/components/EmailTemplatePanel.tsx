@@ -16,10 +16,24 @@ const templates: Template[] = [
         subject: 'Our Seo Package',
         body: `<p>Hi {{name}},</p>
 
-<p>Welcome to our SEO Package! We are excited to help you improve your online visibility, boost search rankings, and grow your digital presence. Our team will work closely with you to ensure your website achieves better performance and long-term organic success.</p>
+<p>We are pleased to confirm that your subscription with <strong>GlobalB2BMart.com</strong> has been successfully activated. As per our records, you have enrolled for the <strong>[Package Name as mentioned on the website]</strong>, effective from <strong>[Date of Joining]</strong>, with a tenure of <strong>[Tenure Period]</strong>. Your account has now been initiated in our system, and our onboarding team will begin setting up your company profile, uploading your product catalogue, and enabling all features included in your selected package to ensure maximum visibility and complete business support throughout your subscription period.</p>
+
+<p>For any assistance during your tenure, you may contact our support team at <strong>011-41029790</strong> or write to us at <strong>webwavebusinesspvtltd@gmail.com </strong>. We are committed to providing prompt and reliable service at all times.</p>
+
+<p>For future payments, kindly ensure that all transactions are made only to the official company bank account, payment gateway, or UPI ID shared below. Any payment made to any other bank account, number, or UPI ID will not be considered valid, and GlobalB2BMart.com / Webwave Business Pvt. Ltd. will not be liable for such transactions. Our official payment details are as follows:</p>
+
+<p><strong>Axis Bank</strong><br/>
+Account Name: Webwave Business Pvt Ltd<br/>
+Account Number: 923020060598477<br/>
+IFSC: UTIB0004098<br/>
+Branch: Ajay Enclave<br/>
+Address: Ground Floor, Property No.26/1, Ajay Enclave, New Ajanta Cinema, New Delhi – 110026</p>
+
+<p>Thank you for choosing <strong>GlobalB2BMart.com</strong> as your trusted B2B growth partner. We look forward to supporting your business and helping you connect with verified global buyers effectively.</p>
 
 <p>Regards,<br/>Team</p>`,
     },
+
     {
         id: 'invoice',
         name: 'Our Standard Package',
@@ -124,9 +138,9 @@ const EmailTemplatePanel = ({ selectedClient, lockToFormEmail, servicePackages, 
             const templateParams = {
                 to_email: to,
                 subject,
-                    message: body,
-                    name: recipientName,
-                    amount,
+                message: body,
+                name: recipientName,
+                amount,
                 // optional: from_name or other template variables
             };
 
@@ -151,79 +165,77 @@ const EmailTemplatePanel = ({ selectedClient, lockToFormEmail, servicePackages, 
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Email Package</h2>
 
             <div>
-                    {!lockToFormEmail && (
-                        <div className="mb-3">
-                            <label className="block text-sm font-medium text-gray-700">To</label>
+                {!lockToFormEmail && (
+                    <div className="mb-3">
+                        <label className="block text-sm font-medium text-gray-700">To</label>
+                        <input
+                            type="email"
+                            value={to}
+                            onChange={(e) => setTo(e.target.value)}
+                            className="mt-1 block w-full border rounded-md px-3 py-2"
+                            placeholder="recipient@example.com"
+                        />
+                    </div>
+                )}
+
+                {!lockToFormEmail && (
+                    <div className="mb-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Name (for template)</label>
                             <input
-                                type="email"
-                                value={to}
-                                onChange={(e) => setTo(e.target.value)}
+                                type="text"
+                                value={recipientName}
+                                onChange={(e) => setRecipientName(e.target.value)}
                                 className="mt-1 block w-full border rounded-md px-3 py-2"
-                                placeholder="recipient@example.com"
+                                placeholder="Client name (optional)"
                             />
                         </div>
-                    )}
 
-                    {!lockToFormEmail && (
-                        <div className="mb-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Name (for template)</label>
-                                <input
-                                    type="text"
-                                    value={recipientName}
-                                    onChange={(e) => setRecipientName(e.target.value)}
-                                    className="mt-1 block w-full border rounded-md px-3 py-2"
-                                    placeholder="Client name (optional)"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Amount (optional)</label>
-                                <input
-                                    type="text"
-                                    value={amount}
-                                    onChange={(e) => setAmount(e.target.value)}
-                                    className="mt-1 block w-full border rounded-md px-3 py-2"
-                                    placeholder="e.g. $199"
-                                />
-                            </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Amount (optional)</label>
+                            <input
+                                type="text"
+                                value={amount}
+                                onChange={(e) => setAmount(e.target.value)}
+                                className="mt-1 block w-full border rounded-md px-3 py-2"
+                                placeholder="e.g. $199"
+                            />
                         </div>
-                    )}
+                    </div>
+                )}
 
-                    <div className="mb-3">
-                        <label className="block text-sm font-medium text-gray-700">Subject</label>
-                        <input
-                            type="text"
-                            value={subject}
-                            onChange={(e) => !lockToFormEmail && setSubject(e.target.value)}
-                            disabled={lockToFormEmail}
-                            className={`mt-1 block w-full border rounded-md px-3 py-2 ${
-                                lockToFormEmail ? 'bg-gray-50 text-gray-600 cursor-not-allowed' : ''
+                <div className="mb-3">
+                    <label className="block text-sm font-medium text-gray-700">Subject</label>
+                    <input
+                        type="text"
+                        value={subject}
+                        onChange={(e) => !lockToFormEmail && setSubject(e.target.value)}
+                        disabled={lockToFormEmail}
+                        className={`mt-1 block w-full border rounded-md px-3 py-2 ${lockToFormEmail ? 'bg-gray-50 text-gray-600 cursor-not-allowed' : ''
                             }`}
-                        />
-                    </div>
+                    />
+                </div>
 
-                    <div className="mb-3">
-                        <label className="block text-sm font-medium text-gray-700">Body (HTML)</label>
-                        <textarea
-                            value={body}
-                            onChange={(e) => !lockToFormEmail && setBody(e.target.value)}
-                            disabled={lockToFormEmail}
-                            className={`mt-1 block w-full border rounded-md px-3 py-2 h-40 ${
-                                lockToFormEmail ? 'bg-gray-50 text-gray-600 cursor-not-allowed' : ''
+                <div className="mb-3">
+                    <label className="block text-sm font-medium text-gray-700">Body (HTML)</label>
+                    <textarea
+                        value={body}
+                        onChange={(e) => !lockToFormEmail && setBody(e.target.value)}
+                        disabled={lockToFormEmail}
+                        className={`mt-1 block w-full border rounded-md px-3 py-2 h-40 ${lockToFormEmail ? 'bg-gray-50 text-gray-600 cursor-not-allowed' : ''
                             }`}
-                        />
-                    </div>
+                    />
+                </div>
 
-                    <div className="flex justify-end">
-                        <button
-                            onClick={handleSend}
-                            disabled={sending}
-                            className="px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-800 disabled:opacity-60"
-                        >
-                            {sending ? 'Sending...' : 'Send Email'}
-                        </button>
-                    </div>
+                <div className="flex justify-end">
+                    <button
+                        onClick={handleSend}
+                        disabled={sending}
+                        className="px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-800 disabled:opacity-60"
+                    >
+                        {sending ? 'Sending...' : 'Send Email'}
+                    </button>
+                </div>
             </div>
         </div>
     );
