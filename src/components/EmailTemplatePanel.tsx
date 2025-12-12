@@ -16,7 +16,7 @@ const templates: Template[] = [
         subject: 'Our Seo Package',
         body: `<p>Hi {{name}},</p>
 
-<p>We are pleased to confirm that your subscription with <strong>GlobalB2BMart.com</strong> has been successfully activated. As per our records, you have enrolled for the <strong>[Package Name as mentioned on the website]</strong>, effective from <strong>[Date of Joining]</strong>, with a tenure of <strong>[Tenure Period]</strong>. Your account has now been initiated in our system, and our onboarding team will begin setting up your company profile, uploading your product catalogue, and enabling all features included in your selected package to ensure maximum visibility and complete business support throughout your subscription period.</p>
+<p>We are pleased to confirm that your subscription with <strong>GlobalB2BMart.com</strong> has been successfully activated. As per our records, you have enrolled for the <strong>S.E.O Package</strong>, effective from <strong>01/01/24</strong>, with a tenure of <strong>1yr</strong>. Your account has now been initiated in our system, and our onboarding team will begin setting up your company profile, uploading your product catalogue, and enabling all features included in your selected package to ensure maximum visibility and complete business support throughout your subscription period.</p>
 
 <p>For any assistance during your tenure, you may contact our support team at <strong>011-41029790</strong> or write to us at <strong>webwavebusinesspvtltd@gmail.com </strong>. We are committed to providing prompt and reliable service at all times.</p>
 
