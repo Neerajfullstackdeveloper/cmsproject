@@ -35,25 +35,67 @@ const servicePackages: ServicePackage[] = [
     id: 'seo',
     name: 'Our SEO Package',
     emailSubject: 'Our SEO Package',
-    emailBody: `<p>Hi {{name}},</p><p>Welcome to our SEO Package! We are excited to help you improve your online visibility, boost search rankings, and grow your digital presence. Our team will work closely with you to ensure your website achieves better performance and long-term organic success.</p><p>Regards,<br/>Team</p>`,
+    emailBody: `<p>Hi {{name}},</p>
+
+<p>We are pleased to confirm that your subscription with <strong>GlobalB2BMart.com</strong> has been successfully activated. As per our records, you have enrolled for the <strong>S.E.O Package</strong>, effective from <strong>{{tenure}}</strong>, with a tenure of <strong>1yr</strong>. Your account has now been initiated in our system, and our onboarding team will begin setting up your company profile, uploading your product catalogue, and enabling all features included in your selected package to ensure maximum visibility and complete business support throughout your subscription period.</p>
+
+<p>For any assistance during your tenure, you may contact our support team at <strong>011-41029790</strong> or write to us at <strong>webwavebusinesspvtltd@gmail.com</strong>. We are committed to providing prompt and reliable service at all times.</p>
+
+<p>For future payments, kindly ensure that all transactions are made only to the official company bank account, payment gateway, or UPI ID shared below. Any payment made to any other bank account, number, or UPI ID will not be considered valid, and GlobalB2BMart.com / Webwave Business Pvt. Ltd. will not be liable for such transactions. Our official payment details are as follows:</p>
+
+<p><strong>Axis Bank</strong><br/>
+Account Name: Webwave Business Pvt Ltd<br/>
+Account Number: 923020060598477<br/>
+IFSC: UTIB0004098<br/>
+Branch: Ajay Enclave<br/>
+Address: Ground Floor, Property No.26/1, Ajay Enclave, New Ajanta Cinema, New Delhi – 110026</p>
+
+<p>Thank you for choosing <strong>GlobalB2BMart.com</strong> as your trusted B2B growth partner. We look forward to supporting your business and helping you connect with verified global buyers effectively.</p>
+
+<p>Regards,<br/>Team</p>`,
   },
   {
     id: 'standard',
     name: 'Our Standard Package',
-    emailSubject: 'Invoice for Your Recent Service',
-    emailBody: `<p>Hi {{name}},</p><p>Please find attached the invoice for the recent service under our Standard Package. The total payable amount is: {{amount}}. If you have any questions or need clarification, feel free to reach out.</p><p>Regards,<br/>Accounting</p>`,
+    emailSubject: 'Our Standard Package',
+    emailBody: `<p>Hi {{name}},</p>
+
+<p>Please find attached the invoice for the recent service under our Standard Package. The total payable amount is: {{amount}}. If you have any questions or need clarification, feel free to reach out.</p>
+
+<p>Regards,<br/>Accounting</p>`,
   },
   {
     id: 'advanced',
     name: 'Our Advanced Package',
-    emailSubject: 'Quick Follow Up',
-    emailBody: `<p>Hi {{name}},</p><p>Just following up on our previous conversation regarding our Advanced Package. If you have any questions or need more details about the features, benefits, or setup process, feel free to reach out—we're here to assist you.</p><p>Thanks,<br/>Team</p>`,
+    emailSubject: 'Our Advanced Package',
+    emailBody: `<p>Hi {{name}},</p>
+
+<p>Just following up on our previous conversation regarding our Advanced Package. If you have any questions or need more details about the features, benefits, or setup process, feel free to reach out—we’re here to assist you.</p>
+
+<p>Thanks,<br/>Team</p>`,
   },
   {
     id: 'googlevirtualtool',
     name: 'Google Virtual Tool',
-    emailSubject: 'Quick Follow Up',
-    emailBody: `<p>Hi {{name}},</p><p>Just following up on our previous conversation regarding the Google Virtual Tool. If you have any questions about setup, features, or how to get started, feel free to let us know—we're here to help.</p><p>Thanks,<br/>Team</p>`,
+    emailSubject: 'Google Virtual Tool',
+    emailBody: `<p>Hi {{name}},</p>
+
+<p>We are pleased to confirm that your subscription with <strong>GlobalB2BMart.com</strong> has been successfully activated. As per our records, you have enrolled for the <strong>Google Virtual Tool</strong>, effective from <strong>{{tenure}}</strong>, with a tenure of <strong>1yr</strong>. Your account has now been initiated in our system, and our onboarding team will begin setting up your company profile, uploading your product catalogue, and enabling all features included in your selected package to ensure maximum visibility and complete business support throughout your subscription period.</p>
+
+<p>For any assistance during your tenure, you may contact our support team at <strong>011-41029790</strong> or write to us at <strong>webwavebusinesspvtltd@gmail.com</strong>. We are committed to providing prompt and reliable service at all times.</p>
+
+<p>For future payments, kindly ensure that all transactions are made only to the official company bank account, payment gateway, or UPI ID shared below. Any payment made to any other bank account, number, or UPI ID will not be considered valid, and GlobalB2BMart.com / Webwave Business Pvt. Ltd. will not be liable for such transactions. Our official payment details are as follows:</p>
+
+<p><strong>Axis Bank</strong><br/>
+Account Name: Webwave Business Pvt Ltd<br/>
+Account Number: 923020060598477<br/>
+IFSC: UTIB0004098<br/>
+Branch: Ajay Enclave<br/>
+Address: Ground Floor, Property No.26/1, Ajay Enclave, New Ajanta Cinema, New Delhi – 110026</p>
+
+<p>Thank you for choosing <strong>GlobalB2BMart.com</strong> as your trusted B2B growth partner. We look forward to supporting your business and helping you connect with verified global buyers effectively.</p>
+
+<p>Regards,<br/>Team</p>`,
   },
 ];
 
