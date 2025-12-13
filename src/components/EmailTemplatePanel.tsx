@@ -53,7 +53,7 @@ Address: Ground Floor, Property No.26/1, Ajay Enclave, New Ajanta Cinema, New De
 
 <p>Just following up on our previous conversation regarding our Advanced Package. If you have any questions or need more details about the features, benefits, or setup process, feel free to reach out—we’re here to assist you.</p>
 
-<p>Thanks,<br/>Team</p>`
+<p>Thanks,<br/>Team</p>`,
     },
     {
     id: 'googlevirtualtool',
