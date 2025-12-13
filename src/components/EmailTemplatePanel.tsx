@@ -154,22 +154,29 @@ const EmailTemplatePanel = ({ selectedClient, lockToFormEmail, servicePackages, 
                 .replace(/\{\{\s*name\s*\}\}/gi, recipientName || '')
                 .replace(/\{\{\s*amount\s*\}\}/gi, amount || '');
 
-            const templateParams = {
-                to_email: to,
-                subject,
-                message: resolvedBody,
-                message_html: resolvedBody,
-                name: recipientName,
-                amount,
-            };
-            console.log('EmailJS payload:', templateParams);
+            const recipients = to
+                .split(/[;,]+/)
+                .map((x) => x.trim())
+                .filter((x) => x.length > 0);
 
-            const result = await emailjs.send(serviceId, templateId, templateParams, publicKey);
-            // result.status === 200 on success
-            console.log('EmailJS send result:', result);
-            toast.success(`EmailJS sent (status ${result.status})`);
-            // show detailed info for debugging
-            toast.info(JSON.stringify(result.text || result), { autoClose: 4000 });
+            const sendPromises = recipients.map((addr) => {
+                const params = {
+                    to_email: addr,
+                    subject,
+                    message: resolvedBody,
+                    message_html: resolvedBody,
+                    name: recipientName,
+                    amount,
+                };
+                console.log('EmailJS payload:', params);
+                return emailjs.send(serviceId, templateId, params, publicKey);
+            });
+
+            const results = await Promise.allSettled(sendPromises);
+            const successes = results.filter((r) => r.status === 'fulfilled').length;
+            const failures = results.length - successes;
+            if (successes > 0) toast.success(`Email sent to ${successes} recipient(s)`);
+            if (failures > 0) toast.error(`Failed for ${failures} recipient(s)`);
             if (!lockToFormEmail) setTo('');
         } catch (err: any) {
             console.error('EmailJS send error:', err);
@@ -190,10 +197,11 @@ const EmailTemplatePanel = ({ selectedClient, lockToFormEmail, servicePackages, 
                         <label className="block text-sm font-medium text-gray-700">To</label>
                         <input
                             type="email"
+                            multiple
                             value={to}
                             onChange={(e) => setTo(e.target.value)}
                             className="mt-1 block w-full border rounded-md px-3 py-2"
-                            placeholder="recipient@example.com"
+                            placeholder="recipient@example.com, other@example.com"
                         />
                     </div>
                 )}
