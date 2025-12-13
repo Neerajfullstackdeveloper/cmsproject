@@ -139,17 +139,10 @@ const EmailTemplatePanel = ({ selectedClient, lockToFormEmail, servicePackages, 
         if (!to) return toast.error('Please provide recipient email');
         setSending(true);
 
-        // EmailJS requires you to set Vite env vars:
-        // VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY
+        // EmailJS env vars (used only if server send fails)
         const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
         const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
         const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-        if (!serviceId || !templateId || !publicKey) {
-            toast.error('EmailJS not configured. Set VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY');
-            setSending(false);
-            return;
-        }
 
         try {
             const tenure = selectedClient?.paymentReceivedDate || '';
@@ -182,6 +175,11 @@ const EmailTemplatePanel = ({ selectedClient, lockToFormEmail, servicePackages, 
                 return;
             } catch (e) {
                 console.log('Server email failed, falling back to EmailJS');
+            }
+
+            if (!serviceId || !templateId || !publicKey) {
+                toast.error('EmailJS not configured. Set VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY');
+                throw new Error('EmailJS config missing');
             }
 
             const sendPromises = recipients.map((addr) => {
