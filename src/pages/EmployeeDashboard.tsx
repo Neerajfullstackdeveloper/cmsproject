@@ -3,8 +3,9 @@ import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Plus, FileCheck, FileX, Clock } from 'lucide-react';
-import ClientForm from '../components/ClientForm';
+import ClientForm, { servicePackages } from '../components/ClientForm';
 import ClientList from '../components/ClientList';
+import EmailTemplatePanel from '../components/EmailTemplatePanel';
 
 interface Client {
   _id: string;
@@ -102,7 +103,10 @@ const EmployeeDashboard = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">New Client Submission</h2>
           <ClientForm onSubmit={handleFormSubmit} onChange={(vals) => setFormValues(vals)} />
-          
+          {/* Show email template below the form based on selected service package */}
+          <div className="mt-6">
+            <EmailTemplatePanel selectedClient={formValues as any} lockToFormEmail={true} servicePackages={servicePackages} selectedPackage={formValues?.serviceName} />
+          </div>
         </div>
       ) : (
         <>
