@@ -150,14 +150,19 @@ const EmailTemplatePanel = ({ selectedClient, lockToFormEmail, servicePackages, 
         }
 
         try {
+            const resolvedBody = body
+                .replace(/\{\{\s*name\s*\}\}/gi, recipientName || '')
+                .replace(/\{\{\s*amount\s*\}\}/gi, amount || '');
+
             const templateParams = {
                 to_email: to,
                 subject,
-                message: body,
+                message: resolvedBody,
+                message_html: resolvedBody,
                 name: recipientName,
                 amount,
-                // optional: from_name or other template variables
             };
+            console.log('EmailJS payload:', templateParams);
 
             const result = await emailjs.send(serviceId, templateId, templateParams, publicKey);
             // result.status === 200 on success
