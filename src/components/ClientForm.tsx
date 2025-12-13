@@ -21,6 +21,7 @@ interface FormData {
   paymentType: 'companyscanner' | 'phonepay' | 'gateway' | 'banktransfer';
   tenureStartDate?: string;
   tenureEndDate?: string;
+  imageBase64?: string;
 }
 
 interface ServicePackage {
@@ -137,6 +138,7 @@ const ClientForm = ({ onSubmit, onChange }: ClientFormProps) => {
     formState: { errors },
     reset,
     control,
+    setValue,
   } = useForm<FormData>();
 
   const watched = useWatch({ control });
@@ -293,6 +295,28 @@ const ClientForm = ({ onSubmit, onChange }: ClientFormProps) => {
           {errors.amount && (
             <p className="mt-1 text-sm text-red-600">{errors.amount.message}</p>
           )}
+        </div>
+        
+        <div>
+          <label htmlFor="clientImage" className="block text-sm font-medium text-gray-700 mb-1">
+            Image
+          </label>
+          <input
+            id="clientImage"
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                const result = typeof reader.result === 'string' ? reader.result : '';
+                setValue('imageBase64', result);
+              };
+              reader.readAsDataURL(file);
+            }}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
         </div>
         
         <div>
