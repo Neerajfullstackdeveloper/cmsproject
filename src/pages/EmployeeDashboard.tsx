@@ -3,9 +3,8 @@ import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Plus, FileCheck, FileX, Clock } from 'lucide-react';
-import ClientForm, { servicePackages } from '../components/ClientForm';
+import ClientForm from '../components/ClientForm';
 import ClientList from '../components/ClientList';
-import EmailTemplatePanel from '../components/EmailTemplatePanel';
 
 interface Client {
   _id: string;
