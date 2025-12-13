@@ -299,7 +299,7 @@ const ClientForm = ({ onSubmit, onChange }: ClientFormProps) => {
         
         <div>
           <label htmlFor="clientImage" className="block text-sm font-medium text-gray-700 mb-1">
-            Image
+            Payment Proof
           </label>
           <input
             id="clientImage"
