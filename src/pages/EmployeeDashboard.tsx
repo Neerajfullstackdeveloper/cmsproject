@@ -62,28 +62,8 @@ const EmployeeDashboard = () => {
   const handleFormSubmit = async (formData: any) => {
     try {
       const { data } = await axios.post('/clients', formData);
-      
       if (data.success) {
         toast.success('Client submission successful');
-        const pkg = servicePackages.find(p => p.name === formData?.serviceName) || servicePackages[0];
-        const subject = pkg.emailSubject;
-        const body = pkg.emailBody;
-        const tenure = formData?.paymentReceivedDate || '';
-        const resolvedHtml = body
-          .replace(/\{\{\s*name\s*\}\}/gi, formData?.clientName || '')
-          .replace(/\{\{\s*amount\s*\}\}/gi, String(formData?.amount ?? ''))
-          .replace(/\{\{\s*tenure\s*\}\}/gi, tenure)
-          .replace(/\{\s*tenure\s*\}/gi, tenure);
-        const resolvedText = resolvedHtml.replace(/<\/*[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-        const to = String(formData?.email || '').trim();
-        if (to) {
-          try {
-            await axios.post('/email/send', { to, subject, html: resolvedHtml, text: resolvedText });
-            toast.success('Email sent');
-          } catch (e: any) {
-            toast.error('Email sending failed');
-          }
-        }
         setShowForm(false);
         fetchClients();
       }

@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import { useForm, useWatch } from 'react-hook-form';
 
 interface ClientFormProps {
@@ -149,10 +151,30 @@ const ClientForm = ({ onSubmit, onChange }: ClientFormProps) => {
     setIsSubmitting(true);
     try {
       await onSubmit(data);
+
+      const pkg = servicePackages.find(p => p.name === data?.serviceName) || servicePackages[0];
+      const subject = pkg.emailSubject;
+      const body = pkg.emailBody;
+      const tenure = data?.paymentReceivedDate || '';
+      const resolvedHtml = body
+        .replace(/\{\{\s*name\s*\}\}/gi, data?.clientName || '')
+        .replace(/\{\{\s*amount\s*\}\}/gi, String(data?.amount ?? ''))
+        .replace(/\{\{\s*tenure\s*\}\}/gi, tenure)
+        .replace(/\{\s*tenure\s*\}/gi, tenure);
+      const resolvedText = resolvedHtml.replace(/<\/*[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+      const to = String(data?.email || '').trim();
+      if (to) {
+        try {
+          await axios.post('/email/send', { to, subject, html: resolvedHtml, text: resolvedText });
+          toast.success('Email sent');
+        } catch (e: any) {
+          toast.error('Email sending failed');
+        }
+      }
+
       reset();
     } finally {
       setIsSubmitting(false);
-
     }
   };
 
