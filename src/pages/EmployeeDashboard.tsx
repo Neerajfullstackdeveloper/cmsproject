@@ -65,6 +65,25 @@ const EmployeeDashboard = () => {
       
       if (data.success) {
         toast.success('Client submission successful');
+        const pkg = servicePackages.find(p => p.name === formData?.serviceName) || servicePackages[0];
+        const subject = pkg.emailSubject;
+        const body = pkg.emailBody;
+        const tenure = formData?.paymentReceivedDate || '';
+        const resolvedHtml = body
+          .replace(/\{\{\s*name\s*\}\}/gi, formData?.clientName || '')
+          .replace(/\{\{\s*amount\s*\}\}/gi, String(formData?.amount ?? ''))
+          .replace(/\{\{\s*tenure\s*\}\}/gi, tenure)
+          .replace(/\{\s*tenure\s*\}/gi, tenure);
+        const resolvedText = resolvedHtml.replace(/<\/*[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+        const to = String(formData?.email || '').trim();
+        if (to) {
+          try {
+            await axios.post('/email/send', { to, subject, html: resolvedHtml, text: resolvedText });
+            toast.success('Email sent');
+          } catch (e: any) {
+            toast.error('Email sending failed');
+          }
+        }
         setShowForm(false);
         fetchClients();
       }
@@ -104,10 +123,7 @@ const EmployeeDashboard = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">New Client Submission</h2>
           <ClientForm onSubmit={handleFormSubmit} onChange={(vals) => setFormValues(vals)} />
-          {/* Show email template below the form based on selected service package */}
-          <div className="mt-6">
-            <EmailTemplatePanel selectedClient={formValues as any} lockToFormEmail={true} servicePackages={servicePackages} selectedPackage={formValues?.serviceName} />
-          </div>
+          
         </div>
       ) : (
         <>
