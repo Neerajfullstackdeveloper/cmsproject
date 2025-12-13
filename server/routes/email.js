@@ -4,7 +4,7 @@ import nodemailer from 'nodemailer';
 const router = express.Router();
 
 router.post('/send', async (req, res) => {
-  const { to, subject, html } = req.body;
+  const { to, subject, html, text } = req.body;
 
   if (!to || !subject || !html) {
     return res.status(400).json({ success: false, message: 'Missing to, subject or html in request body' });
@@ -39,6 +39,7 @@ router.post('/send', async (req, res) => {
       to,
       subject,
       html,
+      text,
     });
 
     return res.json({ success: true, message: 'Email sent', info });

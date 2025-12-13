@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
+import axios from 'axios';
 import { toast } from 'react-toastify';
 
 interface Template {
@@ -52,7 +53,7 @@ Address: Ground Floor, Property No.26/1, Ajay Enclave, New Ajanta Cinema, New De
 
 <p>Just following up on our previous conversation regarding our Advanced Package. If you have any questions or need more details about the features, benefits, or setup process, feel free to reach out—we’re here to assist you.</p>
 
-<p>Thanks,<br/>Team</p>`,
+<p>Thanks,<br/>Team</p>`
     },
     {
     id: 'googlevirtualtool',
@@ -91,6 +92,7 @@ interface EmailTemplatePanelProps {
         email?: string;
         clientName?: string;
         amount?: number | string;
+        paymentReceivedDate?: string;
     } | null;
     lockToFormEmail?: boolean;
     servicePackages?: ServicePackage[];
@@ -150,18 +152,43 @@ const EmailTemplatePanel = ({ selectedClient, lockToFormEmail, servicePackages, 
         }
 
         try {
+            const tenure = selectedClient?.paymentReceivedDate || '';
             const resolvedBody = body
                 .replace(/\{\{\s*name\s*\}\}/gi, recipientName || '')
-                .replace(/\{\{\s*amount\s*\}\}/gi, amount || '');
+                .replace(/\{\{\s*amount\s*\}\}/gi, amount || '')
+                .replace(/\{\{\s*tenure\s*\}\}/gi, tenure)
+                .replace(/\{\s*tenure\s*\}/gi, tenure);
+            const resolvedText = resolvedBody
+                .replace(/<\/*[^>]+>/g, '')
+                .replace(/\s+/g, ' ') // collapse whitespace
+                .trim();
 
             const recipients = to
                 .split(/[;,]+/)
                 .map((x) => x.trim())
                 .filter((x) => x.length > 0);
 
+            try {
+                const serverPayload = {
+                    to: recipients.join(','),
+                    subject,
+                    html: resolvedBody,
+                    text: resolvedText,
+                };
+                const { data } = await axios.post('/email/send', serverPayload);
+                console.log('Server email result:', data);
+                toast.success(`Email sent to ${recipients.length} recipient(s)`);
+                if (!lockToFormEmail) setTo('');
+                return;
+            } catch (e) {
+                console.log('Server email failed, falling back to EmailJS');
+            }
+
             const sendPromises = recipients.map((addr) => {
                 const params = {
                     to_email: addr,
+                    to: addr,
+                    reply_to: addr,
                     subject,
                     message: resolvedBody,
                     message_html: resolvedBody,
