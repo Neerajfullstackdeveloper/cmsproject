@@ -60,6 +60,7 @@ router.post('/', authenticate, authorize('employee'), async (req, res) => {
       paymentType,
       tenureStartDate,
       tenureEndDate,
+      imageBase64,
     } = req.body;
     
     const newClient = new Client({
@@ -78,6 +79,7 @@ router.post('/', authenticate, authorize('employee'), async (req, res) => {
       paymentType,
       tenureStartDate: tenureStartDate ? new Date(tenureStartDate) : undefined,
       tenureEndDate: tenureEndDate ? new Date(tenureEndDate) : undefined,
+      imageBase64,
       status: 'pending'
     });
     

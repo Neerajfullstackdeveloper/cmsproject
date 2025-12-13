@@ -77,6 +77,10 @@ const clientSchema = new mongoose.Schema({
     type: Date,
     required: false
   },
+  imageBase64: {
+    type: String,
+    required: false
+  },
   status: {
     type: String,
     enum: ['pending', 'approved', 'rejected'],
