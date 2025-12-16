@@ -243,7 +243,7 @@ const EmailTemplatePanel = ({ selectedClient, lockToFormEmail, servicePackages, 
                     />
                 </div>
 
-                <div className="flex justify-end">
+                {/* <div className="flex justify-end">
                     <button
                         onClick={handleSend}
                         disabled={sending}
@@ -251,7 +251,7 @@ const EmailTemplatePanel = ({ selectedClient, lockToFormEmail, servicePackages, 
                     >
                         {sending ? 'Sending...' : 'Send Email'}
                     </button>
-                </div>
+                </div> */}
             </div>
         </div>
     );
