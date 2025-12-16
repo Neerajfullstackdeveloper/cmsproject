@@ -509,7 +509,7 @@ const ClientForm = ({ onSubmit, onChange }: ClientFormProps) => {
         )}
       </div>
       
-      <div className="flex justify-end">
+      {/* <div className="flex justify-end">
         <button
           type="submit"
           disabled={isSubmitting}
@@ -529,7 +529,7 @@ const ClientForm = ({ onSubmit, onChange }: ClientFormProps) => {
             'Submit'
           )}
         </button>
-      </div>
+      </div> */}
     </form>
   );
 };
