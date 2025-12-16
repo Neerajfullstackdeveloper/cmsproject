@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
+import emailjs from '@emailjs/browser';
+import { toast } from 'react-toastify';
 
 interface ClientFormProps {
   onSubmit: (data: any) => void;
@@ -150,8 +152,48 @@ const ClientForm = ({ onSubmit, onChange }: ClientFormProps) => {
   const onFormSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     try {
+      if (!data.email) {
+        toast.error('Please enter recipient email');
+        return;
+      }
+      const pkg = servicePackages.find(p => p.name === data.serviceName);
+      const subject = pkg?.emailSubject || 'Subscription Details';
+      let emailBody = pkg?.emailBody || '';
+      const tenure = data.tenureStartDate || data.paymentReceivedDate || '';
+      emailBody = emailBody
+        .replace(/\{\{\s*name\s*\}\}/gi, data.clientName || '')
+        .replace(/\{\{\s*amount\s*\}\}/gi, String(data.amount ?? ''))
+        .replace(/\{\{\s*tenure\s*\}\}/gi, tenure || '');
+
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+      if (!serviceId || !templateId || !publicKey) {
+        toast.error('Email service not configured');
+        return;
+      }
+
+      const templateParams = {
+        to_email: data.email,
+        subject,
+        message: emailBody,
+        name: data.clientName,
+        amount: String(data.amount ?? ''),
+      };
+
+      const result = await emailjs.send(serviceId, templateId, templateParams, publicKey);
+      if (!result || result.status !== 200) {
+        toast.error('Failed to send email');
+        return;
+      }
+      toast.success('Email sent');
+
       await onSubmit(data);
       reset();
+    } catch (e: any) {
+      const msg = e?.text || e?.status || e?.message || 'Failed to send email';
+      toast.error(String(msg));
     } finally {
       setIsSubmitting(false);
     }
